@@ -11,10 +11,20 @@ class RvAdapterBuilder {
     fun getOnVhCreated(viewType: Int) =
         viewHolders[viewType].onViewHolderCreated
 
-    fun <VH : BaseViewHolder, VM> getOnBindVh(viewType: Int) =
+    fun <VH : BaseViewHolder<VM>, VM> getOnBindVh(viewType: Int) =
         viewHolders[viewType].onBindViewHolder as (VH, VM) -> Unit
 
-    fun <VH : BaseViewHolder, VM> register(
+    fun <VH : BaseViewHolder<VM>, VM> register(
+        @LayoutRes layoutRes: Int,
+        onViewHolderCreated: (view: View) -> VH
+    ) {
+        viewHolders.put(
+            layoutRes,
+            BaseRecyclerViewItem(layoutRes, onViewHolderCreated)
+        )
+    }
+
+    fun <VH : BaseViewHolder<VM>, VM> register(
         @LayoutRes layoutRes: Int,
         onViewHolderCreated: (view: View) -> VH,
         onBindViewHolder: (viewHolder: VH, item: VM) -> Unit

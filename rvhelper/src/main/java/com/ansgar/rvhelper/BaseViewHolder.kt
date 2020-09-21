@@ -3,8 +3,8 @@ package com.ansgar.rvhelper
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+abstract class BaseViewHolder<VM>(view: View) : RecyclerView.ViewHolder(view) {
 
-    abstract fun bind(item: Any)
+    abstract fun bind(item: VM)
 
 }

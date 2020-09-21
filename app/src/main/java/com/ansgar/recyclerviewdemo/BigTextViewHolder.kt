@@ -5,9 +5,8 @@ import com.ansgar.rvhelper.BaseViewHolder
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.view_holder_big_text.view.*
 
-class BigTextViewHolder(private val view: View) : BaseViewHolder(view) {
-    override fun bind(item: Any) {
-        item as MainActivity.WebImage
+class BigTextViewHolder(private val view: View) : BaseViewHolder<MainActivity.WebImage>(view) {
+    override fun bind(item: MainActivity.WebImage) {
         with(view) {
             Glide.with(context)
                 .load(item.url)
@@ -15,5 +14,4 @@ class BigTextViewHolder(private val view: View) : BaseViewHolder(view) {
                 .into(image_iv)
         }
     }
-
 }

@@ -28,29 +28,9 @@ class MainActivity : AppCompatActivity() {
                 false
             )
             adapter = createAdapter({
-                register<TextViewHolder, User>(
-                    R.layout.view_holder_text,
-                    { TextViewHolder(it) },
-                    { viewHolder, item -> }
-                )
-                register<ImageViewHolder, Image>(
-                    R.layout.view_holder_image,
-                    { ImageViewHolder(it) },
-                    { viewHolder, item -> }
-                )
-                register<BigTextViewHolder, WebImage>(
-                    R.layout.view_holder_big_text,
-                    { BigTextViewHolder(it) },
-                    { viewHolder, item ->
-                        with(viewHolder.itemView) {
-                            Glide.with(context)
-                                .load(item.url)
-                                .centerCrop()
-                                .into(image_iv)
-                            big_text_tv.text = item.text
-                        }
-                    }
-                )
+                register(R.layout.view_holder_text) { TextViewHolder(it) }
+                register(R.layout.view_holder_image) { ImageViewHolder(it) }
+                register(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
             }) {
                 items.addAll(generateList())
             }

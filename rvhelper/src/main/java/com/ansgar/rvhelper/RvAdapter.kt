@@ -6,21 +6,22 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
 
 class RvAdapter(private val rvAdapterHelper: RvAdapterBuilder) :
-    RecyclerView.Adapter<BaseViewHolder>() {
+    RecyclerView.Adapter<BaseViewHolder<*>>() {
     val items = ArrayList<ViewHolderItem>()
 
     override fun getItemViewType(position: Int): Int = items[position].layoutRes
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
         return rvAdapterHelper.getOnVhCreated(viewType).invoke(view)
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         val item = items[position]
-        val onBind =
-            rvAdapterHelper.getOnBindVh<BaseViewHolder, ViewHolderItem>(getItemViewType(position))
-        onBind.invoke(holder, item)
+//        val onBind =
+//            rvAdapterHelper.getOnBindVh<BaseViewHolder<ViewHolderItem>, ViewHolderItem>(getItemViewType(position))
+//        onBind.invoke(holder as BaseViewHolder<ViewHolderItem>, item)
+        (holder as BaseViewHolder<ViewHolderItem>).bind(item)
     }
 
     override fun getItemCount(): Int = items.size

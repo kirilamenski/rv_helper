@@ -3,8 +3,8 @@ package com.ansgar.recyclerviewdemo
 import android.view.View
 import com.ansgar.rvhelper.BaseViewHolder
 
-class ImageViewHolder(val view: View) : BaseViewHolder(view) {
-    override fun bind(item: Any) {
+class ImageViewHolder(view: View) : BaseViewHolder<MainActivity.Image>(view) {
+    override fun bind(item: MainActivity.Image) {
 
     }
 
