@@ -5,7 +5,7 @@ import com.ansgar.rvhelper.BaseViewHolder
 import kotlinx.android.synthetic.main.view_holder_image.view.*
 
 class ImageViewHolder(private val view: View) : BaseViewHolder<MainActivity.Image>(view) {
-    override fun bind(item: MainActivity.Image) {
+    override fun bindModel(item: MainActivity.Image) {
         with(view) {
             val rnd = (0..10).random()
             image_view_holder_iv.setImageResource(

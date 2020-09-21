@@ -26,10 +26,10 @@ class MainActivity : AppCompatActivity() {
                 false
             )
             adapter = createAdapter({
-                register(R.layout.view_holder_header) { HeaderViewHolder(it) }
-                register(R.layout.view_holder_text) { TextViewHolder(it) }
-                register(R.layout.view_holder_image) { ImageViewHolder(it) }
-                register(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
+                assign(R.layout.view_holder_header) { HeaderViewHolder(it) }
+                assign(R.layout.view_holder_text) { TextViewHolder(it) }
+                assign(R.layout.view_holder_image) { ImageViewHolder(it) }
+                assign(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
             }) {
                 items.addAll(generateList())
             }

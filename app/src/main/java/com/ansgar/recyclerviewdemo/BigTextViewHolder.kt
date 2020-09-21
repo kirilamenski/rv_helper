@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.view_holder_big_text.view.*
 
 class BigTextViewHolder(private val view: View) : BaseViewHolder<MainActivity.WebImage>(view) {
-    override fun bind(item: MainActivity.WebImage) {
+    override fun bindModel(item: MainActivity.WebImage) {
         with(view) {
             Glide.with(context)
                 .load(item.url)
