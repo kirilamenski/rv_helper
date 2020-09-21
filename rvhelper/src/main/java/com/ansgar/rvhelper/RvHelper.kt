@@ -4,7 +4,7 @@ import android.util.SparseArray
 import android.view.View
 import androidx.annotation.LayoutRes
 
-class RvAdapterBuilder {
+class RvHelper {
 
     private val viewHolders = SparseArray<BaseRecyclerViewItem<*, *>>()
 
