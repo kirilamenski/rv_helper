@@ -8,18 +8,21 @@ class RvAdapterBuilder {
 
     private val viewHolders = SparseArray<BaseRecyclerViewItem<*>>()
 
-    fun getOnVhCreatedListener(viewType: Int) =
+    fun getOnVhCreated(viewType: Int) =
         viewHolders[viewType].onViewHolderCreated
 
-    fun registerViewHolder(
+    fun <VH : BaseViewHolder> getOnBindVh(viewType: Int) =
+        viewHolders[viewType].onBindViewHolder as (VH, Int, Any) -> Unit
+
+    fun <T : BaseViewHolder> register(
         @LayoutRes layoutRes: Int,
-        onViewHolderCreated: (view: View) -> BaseViewHolder
+        onViewHolderCreated: (view: View) -> T,
+        onBindViewHolder: (viewHolder: T, position: Int, item: Any) -> Unit
     ) {
-        val baseItem = BaseRecyclerViewItem(
+        viewHolders.put(
             layoutRes,
-            onViewHolderCreated
+            BaseRecyclerViewItem(layoutRes, onViewHolderCreated, onBindViewHolder)
         )
-        viewHolders.put(layoutRes, baseItem)
     }
 
 }

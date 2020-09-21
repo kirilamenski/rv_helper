@@ -1,15 +1,15 @@
 package com.ansgar.recyclerviewdemo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ansgar.rvhelper.BaseRecyclerViewItem
 import com.ansgar.rvhelper.ViewHolderItem
 import com.ansgar.rvhelper.createAdapter
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_holder_big_text.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,12 +28,30 @@ class MainActivity : AppCompatActivity() {
                 false
             )
             adapter = createAdapter({
-                registerViewHolder(R.layout.view_holder_text) {
-                    TextViewHolder(it)
-                }
-                registerViewHolder(R.layout.view_holder_image) {
-                    ImageViewHolder(it)
-                }
+                register(
+                    R.layout.view_holder_text,
+                    { TextViewHolder(it) },
+                    { viewHolder, position, item -> }
+                )
+                register(
+                    R.layout.view_holder_image,
+                    { ImageViewHolder(it) },
+                    { viewHolder, position, item -> }
+                )
+                register(
+                    R.layout.view_holder_big_text,
+                    { BigTextViewHolder(it) },
+                    { viewHolder, position, item ->
+                        item as WebImage
+                        with(viewHolder.itemView) {
+                            Glide.with(context)
+                                .load(item.url)
+                                .centerCrop()
+                                .into(image_iv)
+                            big_text_tv.text = item.text
+                        }
+                    }
+                )
             }) {
                 items.addAll(generateList())
             }
@@ -43,10 +61,18 @@ class MainActivity : AppCompatActivity() {
     private fun generateList(): ArrayList<ViewHolderItem> {
         val array = ArrayList<ViewHolderItem>()
         (0..100).forEach {
-            if (it % 5 == 0) {
-                array.add(Image(R.drawable.ic_launcher_background))
-            } else {
-                array.add(User("Name: $it", "SurName: $it"))
+            when {
+                it % 5 == 0 -> array.add(Image(R.drawable.ic_launcher_background))
+                it % 3 == 0 -> array.add(
+                    WebImage(
+                        "https://cdn.mos.cms.futurecdn.net/7yeCJ65MhGg2egTyeAGPfN-650-80.jpg.webp",
+                        "$it - Of all the rocky, inner worlds of the solar system, Venus is the most challenging to explore. " +
+                                "With surface temperatures reaching a bewildering 867 degrees Fahrenheit (464 degrees Celsius), " +
+                                "even the most hardened landers can't survive for long. But a new idea, called the Calypso Venus Scout, " +
+                                "calls for a bold new mission design: a science probe dangling 20 miles (32 kilometers) below a cloud-borne balloon. "
+                    )
+                )
+                else -> array.add(User("Name: $it", "SurName: $it"))
             }
         }
         return array
@@ -61,5 +87,10 @@ class MainActivity : AppCompatActivity() {
         @DrawableRes
         var backgroundResId: Int
     ) : ViewHolderItem(R.layout.view_holder_image)
+
+    data class WebImage(
+        var url: String,
+        var text: String
+    ) : ViewHolderItem(R.layout.view_holder_big_text)
 
 }
