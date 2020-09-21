@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ansgar.rvhelper.ViewHolderItem
 import com.ansgar.rvhelper.createAdapter
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.view_holder_big_text.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +26,7 @@ class MainActivity : AppCompatActivity() {
                 false
             )
             adapter = createAdapter({
+                register(R.layout.view_holder_header) { HeaderViewHolder(it) }
                 register(R.layout.view_holder_text) { TextViewHolder(it) }
                 register(R.layout.view_holder_image) { ImageViewHolder(it) }
                 register(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
@@ -37,10 +36,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    /**
+     * All below is just for example
+     */
     private fun generateList(): ArrayList<ViewHolderItem> {
         val array = ArrayList<ViewHolderItem>()
         (0..100).forEach {
             when {
+                it % 10 == 0 -> array.add(HeaderModel("$it - Header Label"))
                 it % 5 == 0 -> array.add(Image(R.drawable.ic_launcher_background))
                 it % 3 == 0 -> array.add(
                     WebImage(
@@ -71,5 +75,7 @@ class MainActivity : AppCompatActivity() {
         var url: String,
         var text: String
     ) : ViewHolderItem(R.layout.view_holder_big_text)
+
+    data class HeaderModel(var text: String) : ViewHolderItem(R.layout.view_holder_header)
 
 }
