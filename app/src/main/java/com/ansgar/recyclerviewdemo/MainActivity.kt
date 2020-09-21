@@ -28,21 +28,20 @@ class MainActivity : AppCompatActivity() {
                 false
             )
             adapter = createAdapter({
-                register(
+                register<TextViewHolder, User>(
                     R.layout.view_holder_text,
                     { TextViewHolder(it) },
-                    { viewHolder, position, item -> }
+                    { viewHolder, item -> }
                 )
-                register(
+                register<ImageViewHolder, Image>(
                     R.layout.view_holder_image,
                     { ImageViewHolder(it) },
-                    { viewHolder, position, item -> }
+                    { viewHolder, item -> }
                 )
-                register(
+                register<BigTextViewHolder, WebImage>(
                     R.layout.view_holder_big_text,
                     { BigTextViewHolder(it) },
-                    { viewHolder, position, item ->
-                        item as WebImage
+                    { viewHolder, item ->
                         with(viewHolder.itemView) {
                             Glide.with(context)
                                 .load(item.url)

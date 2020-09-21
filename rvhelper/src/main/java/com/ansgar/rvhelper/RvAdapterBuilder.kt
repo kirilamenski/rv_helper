@@ -6,18 +6,18 @@ import androidx.annotation.LayoutRes
 
 class RvAdapterBuilder {
 
-    private val viewHolders = SparseArray<BaseRecyclerViewItem<*>>()
+    private val viewHolders = SparseArray<BaseRecyclerViewItem<*, *>>()
 
     fun getOnVhCreated(viewType: Int) =
         viewHolders[viewType].onViewHolderCreated
 
-    fun <VH : BaseViewHolder> getOnBindVh(viewType: Int) =
-        viewHolders[viewType].onBindViewHolder as (VH, Int, Any) -> Unit
+    fun <VH : BaseViewHolder, VM> getOnBindVh(viewType: Int) =
+        viewHolders[viewType].onBindViewHolder as (VH, VM) -> Unit
 
-    fun <T : BaseViewHolder> register(
+    fun <VH : BaseViewHolder, VM> register(
         @LayoutRes layoutRes: Int,
-        onViewHolderCreated: (view: View) -> T,
-        onBindViewHolder: (viewHolder: T, position: Int, item: Any) -> Unit
+        onViewHolderCreated: (view: View) -> VH,
+        onBindViewHolder: (viewHolder: VH, item: VM) -> Unit
     ) {
         viewHolders.put(
             layoutRes,
