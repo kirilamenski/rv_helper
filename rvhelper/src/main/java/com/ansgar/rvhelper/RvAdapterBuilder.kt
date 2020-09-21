@@ -24,6 +24,7 @@ class RvAdapterBuilder {
         )
     }
 
+    // TODO Think about do we still need this function if on bind override in ViewHolders?
     fun <VH : BaseViewHolder<VM>, VM> register(
         @LayoutRes layoutRes: Int,
         onViewHolderCreated: (view: View) -> VH,
