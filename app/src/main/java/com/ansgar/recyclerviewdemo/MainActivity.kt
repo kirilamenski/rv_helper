@@ -25,13 +25,14 @@ class MainActivity : AppCompatActivity() {
                 RecyclerView.VERTICAL,
                 false
             )
-            adapter = createAdapter({
-                assign(R.layout.view_holder_header) { HeaderViewHolder(it) }
-                assign(R.layout.view_holder_text) { TextViewHolder(it) }
-                assign(R.layout.view_holder_image) { ImageViewHolder(it) }
-                assign(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
-            }) {
+            adapter = createAdapter {
                 items.addAll(generateList())
+                setHelper {
+                    assign(R.layout.view_holder_header) { HeaderViewHolder(it) }
+                    assign(R.layout.view_holder_text) { TextViewHolder(it) }
+                    assign(R.layout.view_holder_image) { ImageViewHolder(it) }
+                    assign(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
+                }
             }
         }
     }
