@@ -21,7 +21,7 @@ class RvAdapter(private val rvAdapterHelper: RvAdapterBuilder) :
 //        val onBind =
 //            rvAdapterHelper.getOnBindVh<BaseViewHolder<ViewHolderItem>, ViewHolderItem>(getItemViewType(position))
 //        onBind.invoke(holder as BaseViewHolder<ViewHolderItem>, item)
-        (holder as BaseViewHolder<ViewHolderItem>).bind(item)
+        (holder as BaseViewHolder<ViewHolderItem>).bindModel(item)
     }
 
     override fun getItemCount(): Int = items.size
