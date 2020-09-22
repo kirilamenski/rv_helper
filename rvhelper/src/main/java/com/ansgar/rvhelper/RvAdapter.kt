@@ -5,11 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
 
-class RvAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
+open class RvAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     private lateinit var rvAdapterHelper: RvHelper
     val items = ArrayList<ViewHolderItem>()
 
+    // TODO Find a way to use layoutRes from rv helper class
     override fun getItemViewType(position: Int): Int = items[position].layoutRes
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> =
