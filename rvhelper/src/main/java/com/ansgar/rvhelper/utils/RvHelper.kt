@@ -3,16 +3,17 @@ package com.ansgar.rvhelper
 import android.util.SparseArray
 import android.view.View
 import androidx.annotation.LayoutRes
+import com.ansgar.rvhelper.models.BaseRecyclerViewItem
 
 class RvHelper {
 
     private val viewHolders = SparseArray<BaseRecyclerViewItem<*, *>>()
 
     fun getOnVhCreated(viewType: Int) =
-        viewHolders[viewType].onViewHolderCreated
+        viewHolders[viewType]?.onViewHolderCreated
 
     fun <VH : BaseViewHolder<VM>, VM> getOnBindVh(viewType: Int) =
-        viewHolders[viewType].onBindViewHolder as? (VH, VM, Int) -> Unit?
+        viewHolders[viewType]?.onBindViewHolder as? (VH, VM, Int) -> Unit?
 
     fun <VH : BaseViewHolder<VM>, VM> assign(
         @LayoutRes layoutRes: Int,

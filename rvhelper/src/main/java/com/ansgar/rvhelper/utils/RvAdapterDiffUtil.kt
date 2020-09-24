@@ -1,6 +1,7 @@
 package com.ansgar.rvhelper
 
 import androidx.recyclerview.widget.DiffUtil
+import com.ansgar.rvhelper.models.ViewHolderItem
 
 class RvAdapterDiffUtil(
     private val oldItems: List<ViewHolderItem>,

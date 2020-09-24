@@ -1,7 +1,7 @@
 package com.ansgar.recyclerviewdemo
 
 import android.view.View
-import com.ansgar.rvhelper.BaseViewHolder
+import com.ansgar.rvhelper.holders.BaseViewHolder
 import kotlinx.android.synthetic.main.view_holder_header.view.*
 
 class HeaderViewHolder(private val view: View): BaseViewHolder<MainActivity.HeaderModel>(view) {

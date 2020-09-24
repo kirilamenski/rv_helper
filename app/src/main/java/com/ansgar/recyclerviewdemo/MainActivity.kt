@@ -5,8 +5,9 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ansgar.rvhelper.RvAdapter
-import com.ansgar.rvhelper.ViewHolderItem
+import com.ansgar.rvhelper.holders.BaseViewHolderListener
+import com.ansgar.rvhelper.adapters.RvAdapter
+import com.ansgar.rvhelper.models.ViewHolderItem
 import com.ansgar.rvhelper.createAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,8 +21,8 @@ class MainActivity : AppCompatActivity() {
         createRecyclerView()
         add_new_items_bt.setOnClickListener {
             page++
-//            updateList(generateList(page * 25 + 1, 25))
-            updateList(list2)
+            updateList(generateList(page * 25 + 1, 25))
+//            updateList(list2)
         }
     }
 
@@ -33,26 +34,24 @@ class MainActivity : AppCompatActivity() {
                 false
             )
             adapter = createAdapter {
-//                items.addAll(generateList(0, 25))
-                items.addAll(list1)
+                items.addAll(generateList(0, 25))
+//                items.addAll(list1)
                 setHelper {
                     assign(R.layout.view_holder_header) { HeaderViewHolder(it) }
                     assign(
-                        R.layout.view_holder_text,
-                        { TextViewHolder(it) },
-                        { viewHolder, item, position ->
-                            viewHolder.itemView.setOnClickListener {
-                                item.name = (0..1000).random().toString()
-                                item.surName = (0..1000).random().toString()
+                        R.layout.view_holder_text
+                    ) {
+                        TextViewHolder(it, object : TextViewHolderListener {
+                            override fun onTextClicked(user: User, position: Int) {
+                                user.name = (0..1000).random().toString()
+                                user.surName = (0..1000).random().toString()
                                 notifyItemChanged(position)
                             }
-                        }
-                    )
-                    assign(
-                        R.layout.view_holder_image,
-                        { ImageViewHolder(it) },
-                        { viewHolder, item, position ->
-                            viewHolder.itemView.setOnClickListener {
+                        })
+                    }
+                    assign(R.layout.view_holder_image) {
+                        ImageViewHolder(it, object : BaseViewHolderListener<Image> {
+                            override fun onClickViewHolder(item: Image, position: Int) {
                                 val i = (0..100000).random()
                                 item.backgroundResId = if (i % 2 == 0) {
                                     R.drawable.ic_launcher_foreground
@@ -61,13 +60,9 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 notifyItemChanged(position)
                             }
-                        }
-                    )
-                    assign(
-                        R.layout.view_holder_big_text,
-                        { BigTextViewHolder(it) },
-                        { viewHolder, item, position -> }
-                    )
+                        })
+                    }
+                    assign(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
                 }
                 onItemsSame = { oldItem, newItem ->
                     when {
@@ -92,8 +87,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateList(items: ArrayList<ViewHolderItem>) {
         with(rv_example.adapter as RvAdapter) {
-            update(items)
-//            add(items)
+//            update(items)
+            add(items)
         }
     }
 

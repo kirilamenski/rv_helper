@@ -1,10 +1,10 @@
 package com.ansgar.rvhelper
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.ansgar.rvhelper.models.ViewHolderItem
 import java.util.*
 
 open class RvAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
@@ -20,24 +20,28 @@ open class RvAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
     override fun getItemViewType(position: Int): Int = items[position].layoutRes
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> =
-        rvAdapterHelper.getOnVhCreated(viewType)
-            .invoke(
-                LayoutInflater.from(parent.context).inflate(
-                    viewType,
-                    parent,
-                    false
-                )
+        rvAdapterHelper.getOnVhCreated(viewType)?.invoke(
+            LayoutInflater.from(parent.context).inflate(
+                viewType,
+                parent,
+                false
             )
+        ) ?: DefaultViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.view_holder_default,
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         holder as BaseViewHolder<ViewHolderItem>
         val item = items[position]
-        rvAdapterHelper.getOnBindVh<BaseViewHolder<ViewHolderItem>, ViewHolderItem>(
-            getItemViewType(position)
-        )?.invoke(holder, item, position)
+//        rvAdapterHelper.getOnBindVh<BaseViewHolder<ViewHolderItem>, ViewHolderItem>(
+//            getItemViewType(position)
+//        )?.invoke(holder, item, position)
         holder.bindModel(item)
         onBindViewHolder?.let { it(holder, position) }
-        Log.i("!!!!!", "Updated $position")
     }
 
     override fun getItemCount(): Int = items.size
