@@ -11,9 +11,8 @@ class RvHelper {
     fun getOnVhCreated(viewType: Int) =
         viewHolders[viewType].onViewHolderCreated
 
-    // TODO Think about do we still need this function if on bind override in ViewHolders?
     fun <VH : BaseViewHolder<VM>, VM> getOnBindVh(viewType: Int) =
-        viewHolders[viewType].onBindViewHolder as (VH, VM) -> Unit
+        viewHolders[viewType].onBindViewHolder as? (VH, VM, Int) -> Unit?
 
     fun <VH : BaseViewHolder<VM>, VM> assign(
         @LayoutRes layoutRes: Int,
@@ -25,16 +24,14 @@ class RvHelper {
         )
     }
 
-    // TODO Think about do we still need this function if on bind override in ViewHolders?
     fun <VH : BaseViewHolder<VM>, VM> assign(
         @LayoutRes layoutRes: Int,
         onViewHolderCreated: (view: View) -> VH,
-        onBindViewHolder: (viewHolder: VH, item: VM) -> Unit
+        onBindViewHolder: (viewHolder: VH, item: VM, position: Int) -> Unit
     ) {
         viewHolders.put(
             layoutRes,
             BaseRecyclerViewItem(onViewHolderCreated, onBindViewHolder)
         )
     }
-
 }

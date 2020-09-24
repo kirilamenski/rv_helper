@@ -1,14 +1,20 @@
 package com.ansgar.rvhelper
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.collections.ArrayList
+import java.util.*
 
 open class RvAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     private lateinit var rvAdapterHelper: RvHelper
-    val items = ArrayList<ViewHolderItem>()
+    val items = LinkedList<ViewHolderItem>()
+    var onBindViewHolder: ((holder: BaseViewHolder<*>, position: Int) -> Unit)? = null
+    var onBottom: (() -> Unit)? = null
+    var onItemsSame: ((oldItem: ViewHolderItem, newItem: ViewHolderItem) -> Boolean)? = null
+    var onContentSame: ((oldItem: ViewHolderItem, newItem: ViewHolderItem) -> Boolean)? = null
 
     // TODO Find a way to use layoutRes from rv helper class
     override fun getItemViewType(position: Int): Int = items[position].layoutRes
@@ -24,19 +30,38 @@ open class RvAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
             )
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
-//        val item = items[position]
-//        val onBind =
-//            rvAdapterHelper.getOnBindVh<BaseViewHolder<ViewHolderItem>, ViewHolderItem>(getItemViewType(position))
-//        onBind.invoke(holder as BaseViewHolder<ViewHolderItem>, item)
-        (holder as BaseViewHolder<ViewHolderItem>).bindModel(items[position])
+        holder as BaseViewHolder<ViewHolderItem>
+        val item = items[position]
+        rvAdapterHelper.getOnBindVh<BaseViewHolder<ViewHolderItem>, ViewHolderItem>(
+            getItemViewType(position)
+        )?.invoke(holder, item, position)
+        holder.bindModel(item)
+        onBindViewHolder?.let { it(holder, position) }
+        Log.i("!!!!!", "Updated $position")
     }
 
     override fun getItemCount(): Int = items.size
 
-
     fun setHelper(build: RvHelper.() -> Unit) {
         rvAdapterHelper = RvHelper()
         rvAdapterHelper.build()
+    }
+
+    fun add(items: List<ViewHolderItem>) {
+        val prevSize = this.items.size
+        this.items.addAll(items)
+        notifyItemRangeInserted(prevSize, items.size)
+    }
+
+    fun update(newItems: List<ViewHolderItem>) {
+        var diffResult: DiffUtil.DiffResult? = null
+        if (onItemsSame != null && onContentSame != null) {
+            val rvDiffUtil = RvAdapterDiffUtil(items, newItems, onItemsSame!!, onContentSame!!)
+            diffResult = DiffUtil.calculateDiff(rvDiffUtil)
+        }
+        this.items.clear()
+        this.items.addAll(newItems)
+        diffResult?.dispatchUpdatesTo(this)
     }
 
 }
