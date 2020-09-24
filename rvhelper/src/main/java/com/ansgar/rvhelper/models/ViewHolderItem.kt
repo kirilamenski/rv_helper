@@ -1,4 +1,4 @@
-package com.ansgar.rvhelper
+package com.ansgar.rvhelper.models
 
 import androidx.annotation.LayoutRes
 

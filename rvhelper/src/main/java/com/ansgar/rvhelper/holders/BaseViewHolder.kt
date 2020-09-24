@@ -1,4 +1,4 @@
-package com.ansgar.rvhelper
+package com.ansgar.rvhelper.holders
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

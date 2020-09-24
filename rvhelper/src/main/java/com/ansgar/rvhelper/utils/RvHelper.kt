@@ -1,8 +1,9 @@
-package com.ansgar.rvhelper
+package com.ansgar.rvhelper.utils
 
 import android.util.SparseArray
 import android.view.View
 import androidx.annotation.LayoutRes
+import com.ansgar.rvhelper.holders.BaseViewHolder
 import com.ansgar.rvhelper.models.BaseRecyclerViewItem
 
 class RvHelper {

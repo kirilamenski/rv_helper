@@ -1,4 +1,4 @@
-package com.ansgar.rvhelper
+package com.ansgar.rvhelper.utils
 
 import androidx.recyclerview.widget.DiffUtil
 import com.ansgar.rvhelper.models.ViewHolderItem

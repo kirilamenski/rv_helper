@@ -1,10 +1,15 @@
-package com.ansgar.rvhelper
+package com.ansgar.rvhelper.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.ansgar.rvhelper.*
+import com.ansgar.rvhelper.holders.BaseViewHolder
+import com.ansgar.rvhelper.holders.DefaultViewHolder
 import com.ansgar.rvhelper.models.ViewHolderItem
+import com.ansgar.rvhelper.utils.RvAdapterDiffUtil
+import com.ansgar.rvhelper.utils.RvHelper
 import java.util.*
 
 open class RvAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {

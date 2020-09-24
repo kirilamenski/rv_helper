@@ -1,5 +1,7 @@
 package com.ansgar.rvhelper
 
+import com.ansgar.rvhelper.adapters.RvAdapter
+
 inline fun createAdapter(build: RvAdapter.() -> Unit): RvAdapter {
     val rvAdapter = RvAdapter()
     rvAdapter.build()
