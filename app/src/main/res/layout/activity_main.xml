@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -20,6 +21,13 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <Button
+        android:id="@+id/add_new_items_bt"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:text="Add Items"
+        android:textAllCaps="false" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_example"
