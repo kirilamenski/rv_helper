@@ -1,13 +1,12 @@
-package com.ansgar.rvhelper.utils
+package utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.ansgar.rvhelper.models.ViewHolderItem
 
-class RvAdapterDiffUtil(
-    private val oldItems: List<ViewHolderItem>,
-    private val newItems: List<ViewHolderItem>,
-    private val onItemsSame: ((oldItem: ViewHolderItem, newItem: ViewHolderItem) -> Boolean),
-    private val onContentSame: ((oldItem: ViewHolderItem, newItem: ViewHolderItem) -> Boolean),
+class RvAdapterDiffUtil<T>(
+    private val oldItems: List<T>,
+    private val newItems: List<T>,
+    private val onItemsSame: ((oldItem: T, newItem: T) -> Boolean),
+    private val onContentSame: ((oldItem: T, newItem: T) -> Boolean),
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldItems.size

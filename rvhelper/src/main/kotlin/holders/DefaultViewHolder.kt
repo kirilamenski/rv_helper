@@ -1,4 +1,4 @@
-package com.ansgar.rvhelper.holders
+package holders
 
 import android.util.Log
 import android.view.View

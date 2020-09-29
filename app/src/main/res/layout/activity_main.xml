@@ -30,6 +30,13 @@
         android:text="Add Items"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/open_btn"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:text="Open Second Activity"
+        android:textAllCaps="false" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_example"
         android:layout_width="match_parent"

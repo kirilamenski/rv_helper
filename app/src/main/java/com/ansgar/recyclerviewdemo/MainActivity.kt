@@ -1,14 +1,15 @@
 package com.ansgar.recyclerviewdemo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ansgar.rvhelper.holders.BaseViewHolderListener
-import com.ansgar.rvhelper.adapters.RvAdapter
-import com.ansgar.rvhelper.models.ViewHolderItem
-import com.ansgar.rvhelper.createAdapter
+import holders.BaseViewHolderListener
+import adapters.MultipleTypesAdapter
+import models.ViewHolderItem
+import createMultipleTypesAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity() {
             updateList(generateList(page * 25 + 1, 25))
 //            updateList(list2)
         }
+        open_btn.setOnClickListener {
+            startActivity(Intent(this, SecondActivity::class.java))
+        }
     }
 
     private fun createRecyclerView() {
@@ -33,23 +37,25 @@ class MainActivity : AppCompatActivity() {
                 RecyclerView.VERTICAL,
                 false
             )
-            adapter = createAdapter {
-                items.addAll(generateList(0, 25))
-//                items.addAll(list1)
-                setHelper {
-                    assign(R.layout.view_holder_header) { HeaderViewHolder(it) }
-                    assign(
-                        R.layout.view_holder_text
-                    ) {
+            adapter = createMultipleTypesAdapter {
+                addAll(generateList(0, 25))
+//                addNewItems(list1)
+                viewHoldersUtil {
+                    create(R.layout.view_holder_header) { HeaderViewHolder(it) }
+                    create(R.layout.view_holder_text) {
                         TextViewHolder(it, object : TextViewHolderListener {
                             override fun onTextClicked(user: User, position: Int) {
                                 user.name = (0..1000).random().toString()
                                 user.surName = (0..1000).random().toString()
-                                notifyItemChanged(position)
+                                update(user, position)
+                            }
+
+                            override fun onLongClickedViewHolder(item: User, position: Int) {
+                                delete(position)
                             }
                         })
                     }
-                    assign(R.layout.view_holder_image) {
+                    create(R.layout.view_holder_image) {
                         ImageViewHolder(it, object : BaseViewHolderListener<Image> {
                             override fun onClickViewHolder(item: Image, position: Int) {
                                 val i = (0..100000).random()
@@ -60,9 +66,20 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 notifyItemChanged(position)
                             }
+
+                            override fun onLongClickedViewHolder(item: Image, position: Int) {
+                                add(
+                                    User(
+                                        System.currentTimeMillis().toInt(),
+                                        "New",
+                                        "User"
+                                    ),
+                                    position
+                                )
+                            }
                         })
                     }
-                    assign(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
+                    create(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
                 }
                 onItemsSame = { oldItem, newItem ->
                     when {
@@ -86,9 +103,9 @@ class MainActivity : AppCompatActivity() {
      */
 
     private fun updateList(items: ArrayList<ViewHolderItem>) {
-        with(rv_example.adapter as RvAdapter) {
-//            update(items)
-            add(items)
+        with(rv_example.adapter as MultipleTypesAdapter) {
+            updateAll(items)
+//            add(items)
         }
     }
 

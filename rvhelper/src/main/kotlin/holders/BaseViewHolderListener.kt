@@ -1,4 +1,4 @@
-package com.ansgar.rvhelper.holders
+package holders
 
 interface BaseViewHolderListener<T> {
     fun onClickViewHolder(item: T, position: Int) {}
