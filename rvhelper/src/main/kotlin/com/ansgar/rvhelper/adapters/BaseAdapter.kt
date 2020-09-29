@@ -1,4 +1,4 @@
-package adapters
+package com.ansgar.rvhelper.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,10 +6,10 @@ import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ansgar.rvhelper.R
-import holders.BaseViewHolder
-import holders.DefaultViewHolder
-import utils.RvAdapterDiffUtil
-import utils.ViewHoldersUtil
+import com.ansgar.rvhelper.holders.BaseViewHolder
+import com.ansgar.rvhelper.holders.DefaultViewHolder
+import com.ansgar.rvhelper.utils.RvAdapterDiffUtil
+import com.ansgar.rvhelper.utils.ViewHoldersUtil
 import kotlin.collections.ArrayList
 
 /**

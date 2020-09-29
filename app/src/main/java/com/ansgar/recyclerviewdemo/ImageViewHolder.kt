@@ -1,8 +1,8 @@
 package com.ansgar.recyclerviewdemo
 
 import android.view.View
-import holders.BaseViewHolder
-import holders.BaseViewHolderListener
+import com.ansgar.rvhelper.holders.BaseViewHolder
+import com.ansgar.rvhelper.holders.BaseViewHolderListener
 import kotlinx.android.synthetic.main.view_holder_image.view.*
 
 class ImageViewHolder(

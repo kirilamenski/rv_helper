@@ -1,4 +1,4 @@
-package utils
+package com.ansgar.rvhelper.utils
 
 import androidx.recyclerview.widget.DiffUtil
 

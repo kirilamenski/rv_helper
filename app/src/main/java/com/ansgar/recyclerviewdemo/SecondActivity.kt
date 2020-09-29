@@ -3,7 +3,7 @@ package com.ansgar.recyclerviewdemo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import createSingleTypeAdapter
+import com.ansgar.rvhelper.createSingleTypeAdapter
 import kotlinx.android.synthetic.main.activity_second.*
 
 class SecondActivity : AppCompatActivity() {

@@ -1,5 +1,7 @@
-import adapters.MultipleTypesAdapter
-import adapters.SingleTypeAdapter
+package com.ansgar.rvhelper
+
+import com.ansgar.rvhelper.adapters.MultipleTypesAdapter
+import com.ansgar.rvhelper.adapters.SingleTypeAdapter
 
 /**
  * Extension class that provide the ability to create adapter for Recycler View

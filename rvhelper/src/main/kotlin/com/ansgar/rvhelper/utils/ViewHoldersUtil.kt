@@ -1,10 +1,10 @@
-package utils
+package com.ansgar.rvhelper.utils
 
 import android.util.SparseArray
 import android.view.View
 import androidx.annotation.LayoutRes
-import holders.BaseViewHolder
-import models.BaseRecyclerViewItem
+import com.ansgar.rvhelper.holders.BaseViewHolder
+import com.ansgar.rvhelper.models.BaseRecyclerViewItem
 
 class ViewHoldersUtil {
 

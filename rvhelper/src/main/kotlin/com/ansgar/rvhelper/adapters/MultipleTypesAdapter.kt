@@ -1,6 +1,6 @@
-package adapters
+package com.ansgar.rvhelper.adapters
 
-import models.ViewHolderItem
+import com.ansgar.rvhelper.models.ViewHolderItem
 
 /**
  * Adapter use to create multiple [RecyclerView] with multiple view types.

@@ -1,4 +1,4 @@
-package adapters
+package com.ansgar.rvhelper.adapters
 
 class SingleTypeAdapter<VM> : BaseAdapter<VM>() {
 

@@ -1,6 +1,6 @@
-package adapters
+package com.ansgar.rvhelper.adapters
 
-import utils.ViewHoldersUtil
+import com.ansgar.rvhelper.utils.ViewHoldersUtil
 
 internal interface AdapterActions<T> {
     fun viewHoldersUtil(build: ViewHoldersUtil.() -> Unit)

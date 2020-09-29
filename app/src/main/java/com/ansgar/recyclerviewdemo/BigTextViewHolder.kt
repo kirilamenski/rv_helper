@@ -1,7 +1,7 @@
 package com.ansgar.recyclerviewdemo
 
 import android.view.View
-import holders.BaseViewHolder
+import com.ansgar.rvhelper.holders.BaseViewHolder
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.view_holder_big_text.view.*
 

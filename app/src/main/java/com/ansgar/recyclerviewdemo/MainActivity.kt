@@ -6,10 +6,10 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import holders.BaseViewHolderListener
-import adapters.MultipleTypesAdapter
-import models.ViewHolderItem
-import createMultipleTypesAdapter
+import com.ansgar.rvhelper.holders.BaseViewHolderListener
+import com.ansgar.rvhelper.adapters.MultipleTypesAdapter
+import com.ansgar.rvhelper.models.ViewHolderItem
+import com.ansgar.rvhelper.createMultipleTypesAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
