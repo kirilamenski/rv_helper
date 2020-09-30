@@ -2,6 +2,7 @@ package com.ansgar.recyclerviewdemo
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,21 +11,18 @@ import com.ansgar.rvhelper.holders.BaseViewHolderListener
 import com.ansgar.rvhelper.adapters.MultipleTypesAdapter
 import com.ansgar.rvhelper.models.ViewHolderItem
 import com.ansgar.rvhelper.createMultipleTypesAdapter
+import com.ansgar.rvhelper.holders.LoadViewHolder
+import com.ansgar.rvhelper.scroll.OnPageChanged
+import com.ansgar.rvhelper.scroll.RvScrollListener
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnPageChanged {
 
-    var page = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         createRecyclerView()
-        add_new_items_bt.setOnClickListener {
-            page++
-            updateList(generateList(page * 25 + 1, 25))
-//            updateList(list2)
-        }
         open_btn.setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
         }
@@ -41,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                 addAll(generateList(0, 25))
 //                addNewItems(list1)
                 viewHoldersUtil {
+                    createLoadingViewHolder(R.layout.view_holder_loading) { LoadViewHolder(it) }
                     create(R.layout.view_holder_header) { HeaderViewHolder(it) }
                     create(R.layout.view_holder_text) {
                         TextViewHolder(it, object : TextViewHolderListener {
@@ -95,7 +94,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+            addOnScrollListener(RvScrollListener(this@MainActivity))
         }
+    }
+
+    override fun onPageChanged(page: Int) {
+        updateList(generateList(page * 25 + 1, 25))
     }
 
     /**
@@ -104,8 +108,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateList(items: ArrayList<ViewHolderItem>) {
         with(rv_example.adapter as MultipleTypesAdapter) {
-            updateAll(items)
-//            add(items)
+//            updateAll(items)
+            addAll(items)
         }
     }
 
@@ -121,7 +125,33 @@ class MainActivity : AppCompatActivity() {
                         "$it - Of all the rocky, inner worlds of the solar system, Venus is the most challenging to explore. " +
                                 "With surface temperatures reaching a bewildering 867 degrees Fahrenheit (464 degrees Celsius), " +
                                 "even the most hardened landers can't survive for long. But a new idea, called the Calypso Venus Scout, " +
-                                "calls for a bold new mission design: a science probe dangling 20 miles (32 kilometers) below a cloud-borne balloon. "
+                                "calls for a bold new mission design: a science probe dangling 20 miles (32 kilometers) below a cloud-borne balloon. " +
+                                "A U.N.-declared international celebration of space science starts next week, and the public can participate in virtual events to mark the occasion. \n" +
+                                "\n" +
+                                "World Space Week is held each year from Oct. 4 to Oct. 10, and this year's programming will focus on satellites. World Space Week typically features space events hosted by participating space agencies, aerospace companies, museums, schools, and astronomy clubs, although the week will look different this year given public health measures in place to slow the spread of COVID-19. \n" +
+                                "\n" +
+                                "This year's theme is quite relevant to our increasingly virtual lifestyles. The broad benefits of satellites are \"things we don't normally think about; we take them for granted,\" Maruška Strah, executive director of World Space Week Association, told Space.com in an interview.\n" +
+                                "\n" +
+                                "Related: What is a satellite?" +
+                                "\"Every single aspect about being able to connect right now [during the pandemic] is thanks to satellites,\" Strah added. \n" +
+                                "\n" +
+                                "World Space Week Association president Dennis Stone told Space.com that there is currently a revolution in the satellite industry. \"There's a range of accessibility and applications, so we try to get people to look very broadly this year at what's happening in the satellite world,\" Stone said.\n" +
+                                "\n" +
+                                "He highlighted the development of cubesats and low Earth orbit megaconstellations as examples of recent trends in the industry. Satellites can also be used to address global issues, Strah said, such as animal migrations and the spread of disease. \n" +
+                                "\n" +
+                                "Strah and Stone said that the pandemic and its social consequences will likely decrease participation in the week's events. \n" +
+                                "\n" +
+                                "\"This year we realize there's going to be a drop in the number of events because it's not safe to have public gatherings as we would in a normal year,\" Stone said, before adding that there are ways to bring science to home.\n" +
+                                "\n" +
+                                "\"We're also encouraging people to celebrate space and satellites in safe ways,\" Stone said. \"That could be as simple as parents taking their kids out in the backyard after sunset and looking for satellites in the evening and trying to learn what they are and get excited about what they can do.\"\n" +
+                                "\n" +
+                                "Strah is also optimistic about the global connection that virtual events can provide. Digital gatherings could bring people together from different parts of the world at the same time because there is no need to tackle travel constraints.\n" +
+                                "\n" +
+                                "World Space Week 2020 runs Oct. 4-Oct. 10. Visit the World Space Week website hereTo learn more about the U.N. project, how to join or host an event.\n" +
+                                "\n" +
+                                "Follow Doris Elin Urrutia on Twitter @salazar_elin. Follow us on Twitter @Spacedotcom and on Facebook. \n" +
+                                "\n" +
+                                "Join our Space Forums to keep talking space on the latest missions, night sky and more! And if you have a news tip, correction or comment, let us know at: community@space.com."
                     )
                 )
                 else -> array.add(User(it, "Name: $it", "SurName: $it"))

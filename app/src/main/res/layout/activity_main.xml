@@ -24,13 +24,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <Button
-        android:id="@+id/add_new_items_bt"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:text="Add Items"
-        android:textAllCaps="false" />
-
-    <Button
         android:id="@+id/open_btn"
         android:layout_width="240dp"
         android:layout_height="wrap_content"

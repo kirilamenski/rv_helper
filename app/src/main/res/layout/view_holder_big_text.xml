@@ -12,8 +12,6 @@
     <TextView
         android:id="@+id/big_text_tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Of all the rocky, inner worlds of the solar system, Venus is the most challenging to explore.
-With surface temperatures reaching a bewildering 867 degrees Fahrenheit (464 degrees Celsius), even the most hardened landers can't survive for long. But a new idea, called the Calypso Venus Scout, calls for a bold new mission design: a science probe dangling 20 miles (32 kilometers) below a cloud-borne balloon. " />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -12,6 +12,7 @@ class BigTextViewHolder(private val view: View) : BaseViewHolder<MainActivity.We
                 .load(item.url)
                 .centerCrop()
                 .into(image_iv)
+            big_text_tv.text = item.text
         }
     }
 }

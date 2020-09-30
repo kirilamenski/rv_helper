@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
  * Basic Adapter class. It is contain basic implementations of [AdapterActions].
  * @param VM is View Model which is in the [items].
  */
-abstract class BaseAdapter<VM> : RecyclerView.Adapter<BaseViewHolder<*>>(), AdapterActions<VM> {
+abstract class BaseAdapter<VM>() : RecyclerView.Adapter<BaseViewHolder<*>>(), AdapterActions<VM> {
     /**
      * Main list which contain View Models [VM]. It is internal to use it only in package.
      * All necessary methods should be defined in [AdapterActions] and implemented in base adapter
@@ -24,6 +24,7 @@ abstract class BaseAdapter<VM> : RecyclerView.Adapter<BaseViewHolder<*>>(), Adap
      */
     internal val items = ArrayList<VM>()
     internal var viewHoldersUtil: ViewHoldersUtil = ViewHoldersUtil()
+
     var onBindViewHolder: ((holder: BaseViewHolder<*>, position: Int) -> Unit)? = null
     var onItemsSame: ((oldItem: VM, newItem: VM) -> Boolean)? = null
     var onContentSame: ((oldItem: VM, newItem: VM) -> Boolean)? = null
@@ -64,7 +65,8 @@ abstract class BaseAdapter<VM> : RecyclerView.Adapter<BaseViewHolder<*>>(), Adap
         viewHoldersUtil.build()
     }
 
-    override fun addAll(items: List<VM>) {
+    @CallSuper
+    override fun addAll(items: ArrayList<VM>) {
         val size = this.items.size
         this.items.addAll(items)
         notifyItemRangeInserted(size, items.size)
@@ -74,7 +76,7 @@ abstract class BaseAdapter<VM> : RecyclerView.Adapter<BaseViewHolder<*>>(), Adap
      * Use [DiffUtil] to make it easy to update list.
      * @param items new items.
      */
-    override fun updateAll(items: List<VM>) {
+    override fun updateAll(items: ArrayList<VM>) {
         var diffResult: DiffUtil.DiffResult? = null
         if (onItemsSame != null && onContentSame != null) {
             diffResult = DiffUtil.calculateDiff(
@@ -119,6 +121,9 @@ abstract class BaseAdapter<VM> : RecyclerView.Adapter<BaseViewHolder<*>>(), Adap
             items[position] = item
             notifyItemChanged(position, payload)
         }
+    }
+
+    override fun deleteAllLoadings() {
     }
 
     /**

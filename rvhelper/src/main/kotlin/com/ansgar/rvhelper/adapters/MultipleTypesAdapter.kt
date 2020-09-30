@@ -14,4 +14,18 @@ open class MultipleTypesAdapter : BaseAdapter<ViewHolderItem>() {
      */
     override fun getItemViewType(position: Int): Int = items[position].layoutRes
 
+    override fun addAll(items: ArrayList<ViewHolderItem>) {
+        if (viewHoldersUtil.loadingLayoutResId != -1) {
+            deleteAllLoadings()
+            if (items.isNotEmpty()) items.add(ViewHolderItem(viewHoldersUtil.loadingLayoutResId))
+        }
+        super.addAll(items)
+    }
+
+    override fun deleteAllLoadings() {
+        items.lastOrNull()?.let {
+            if (it.layoutRes == viewHoldersUtil.loadingLayoutResId) delete(items.lastIndex)
+        }
+    }
+
 }
