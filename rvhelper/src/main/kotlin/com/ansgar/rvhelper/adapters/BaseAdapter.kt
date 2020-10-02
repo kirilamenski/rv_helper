@@ -129,7 +129,6 @@ abstract class BaseAdapter<VM>(val viewHoldersUtil: ViewHoldersUtil) :
 
     override fun refresh() {
         items.clear()
-//        notifyItemRangeRemoved(0, items.size)
         notifyDataSetChanged()
         onScrollingObserver?.onRefresh()
     }
