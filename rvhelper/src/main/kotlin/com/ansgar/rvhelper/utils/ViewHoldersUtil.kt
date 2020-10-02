@@ -5,7 +5,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import com.ansgar.rvhelper.R
 import com.ansgar.rvhelper.holders.BaseViewHolder
-import com.ansgar.rvhelper.holders.LoadViewHolder
+import com.ansgar.rvhelper.holders.DefaultLoadingViewHolder
 import com.ansgar.rvhelper.models.BaseRecyclerViewItem
 
 class ViewHoldersUtil {
@@ -34,12 +34,21 @@ class ViewHoldersUtil {
         viewHolders.put(layoutRes, BaseRecyclerViewItem(onViewHolderCreated, onBindViewHolder))
     }
 
-    fun <VH : LoadViewHolder> createLoadingViewHolder(
-        @LayoutRes layoutRes: Int = R.layout.view_holder_loading,
+    fun <VH : DefaultLoadingViewHolder> createLoadingViewHolder(
+        onViewHolderCreated: (view: View) -> VH
+    ) {
+        createLoadingViewHolder(R.layout.view_holder_default_loading, onViewHolderCreated)
+    }
+
+    fun <VH : DefaultLoadingViewHolder> createLoadingViewHolder(
+        @LayoutRes layoutRes: Int,
         onViewHolderCreated: (view: View) -> VH
     ) {
         loadingLayoutResId = layoutRes
-        viewHolders.put(layoutRes, BaseRecyclerViewItem<LoadViewHolder, Any>(onViewHolderCreated))
+        viewHolders.put(
+            layoutRes,
+            BaseRecyclerViewItem<DefaultLoadingViewHolder, Any>(onViewHolderCreated)
+        )
     }
 
 }
