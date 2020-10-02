@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ansgar.rvhelper.R
 import com.ansgar.rvhelper.holders.BaseViewHolder
-import com.ansgar.rvhelper.holders.DefaultViewHolder
+import com.ansgar.rvhelper.holders.ErrorViewHolder
 import com.ansgar.rvhelper.scroll.RvAdapterObserver
 import com.ansgar.rvhelper.utils.RvAdapterDiffUtil
 import com.ansgar.rvhelper.utils.ViewHoldersUtil
@@ -40,9 +40,9 @@ abstract class BaseAdapter<VM>(val viewHoldersUtil: ViewHoldersUtil) :
                 parent,
                 false
             )
-        ) ?: DefaultViewHolder(
+        ) ?: ErrorViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.view_holder_default,
+                R.layout.view_holder_error,
                 parent,
                 false
             )

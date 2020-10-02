@@ -3,7 +3,7 @@ package com.ansgar.rvhelper.holders
 import android.util.Log
 import android.view.View
 
-class DefaultViewHolder(view: View) : BaseViewHolder<Any>(view) {
+class ErrorViewHolder(view: View) : BaseViewHolder<Any>(view) {
     override fun bindModel(item: Any) {
         Log.e(
             this::class.java.simpleName,
