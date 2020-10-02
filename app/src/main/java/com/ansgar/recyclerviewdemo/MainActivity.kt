@@ -11,7 +11,7 @@ import com.ansgar.rvhelper.holders.BaseViewHolderListener
 import com.ansgar.rvhelper.adapters.MultipleTypesAdapter
 import com.ansgar.rvhelper.models.ViewHolderItem
 import com.ansgar.rvhelper.createMultipleTypesAdapter
-import com.ansgar.rvhelper.holders.LoadViewHolder
+import com.ansgar.rvhelper.holders.DefaultLoadingViewHolder
 import com.ansgar.rvhelper.scroll.OnPageChanged
 import com.ansgar.rvhelper.scroll.RvScrollListener
 import com.ansgar.rvhelper.viewHoldersUtil
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), OnPageChanged {
     private lateinit var rvAdapter: MultipleTypesAdapter
     private val onScrollListener = RvScrollListener(this@MainActivity)
     private val viewHoldersUtil = viewHoldersUtil {
-        createLoadingViewHolder(R.layout.view_holder_loading) { LoadViewHolder(it) }
+        createLoadingViewHolder { DefaultLoadingViewHolder(it) }
         create(R.layout.view_holder_header) { HeaderViewHolder(it) }
         create(R.layout.view_holder_text) {
             TextViewHolder(it, object : TextViewHolderListener {
