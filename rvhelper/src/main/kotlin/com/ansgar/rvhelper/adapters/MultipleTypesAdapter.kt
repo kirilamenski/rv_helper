@@ -1,13 +1,15 @@
 package com.ansgar.rvhelper.adapters
 
 import com.ansgar.rvhelper.models.ViewHolderItem
+import com.ansgar.rvhelper.utils.ViewHoldersUtil
 
 /**
  * Adapter use to create multiple [RecyclerView] with multiple view types.
  * [ViewHolderItem] is the basic class which contain layoutRes that [RecyclerView.getItemViewType]
  * use to create many different [ViewHolder].
  */
-open class MultipleTypesAdapter : BaseAdapter<ViewHolderItem>() {
+open class MultipleTypesAdapter(viewHoldersUtil: ViewHoldersUtil) :
+    BaseAdapter<ViewHolderItem>(viewHoldersUtil) {
 
     /**
      * [items.layoutRes] used as view holder type
@@ -16,13 +18,13 @@ open class MultipleTypesAdapter : BaseAdapter<ViewHolderItem>() {
 
     override fun addAll(items: ArrayList<ViewHolderItem>) {
         if (viewHoldersUtil.loadingLayoutResId != -1) {
-            deleteAllLoadings()
+            deleteLoadingViewHolder()
             if (items.isNotEmpty()) items.add(ViewHolderItem(viewHoldersUtil.loadingLayoutResId))
         }
         super.addAll(items)
     }
 
-    override fun deleteAllLoadings() {
+    override fun deleteLoadingViewHolder() {
         items.lastOrNull()?.let {
             if (it.layoutRes == viewHoldersUtil.loadingLayoutResId) delete(items.lastIndex)
         }

@@ -1,10 +1,7 @@
 package com.ansgar.rvhelper.adapters
 
-import com.ansgar.rvhelper.utils.ViewHoldersUtil
 
 internal interface AdapterActions<T> {
-    fun viewHoldersUtil(build: ViewHoldersUtil.() -> Unit)
-
     fun addAll(items: ArrayList<T>)
 
     fun updateAll(items: ArrayList<T>)
@@ -17,9 +14,11 @@ internal interface AdapterActions<T> {
 
     fun delete(position: Int)
 
-    fun deleteAllLoadings()
+    fun deleteLoadingViewHolder()
 
     fun update(item: T, position: Int, payload: Boolean = true)
 
     fun getItemAt(position: Int): T
+
+    fun refresh()
 }

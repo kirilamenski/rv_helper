@@ -2,7 +2,7 @@ package com.ansgar.recyclerviewdemo
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,9 +14,58 @@ import com.ansgar.rvhelper.createMultipleTypesAdapter
 import com.ansgar.rvhelper.holders.LoadViewHolder
 import com.ansgar.rvhelper.scroll.OnPageChanged
 import com.ansgar.rvhelper.scroll.RvScrollListener
+import com.ansgar.rvhelper.viewHoldersUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnPageChanged {
+
+    private var handler: Handler? = null
+    private var runnable: Runnable? = null
+
+    private lateinit var rvAdapter: MultipleTypesAdapter
+    private val onScrollListener = RvScrollListener(this@MainActivity)
+    private val viewHoldersUtil = viewHoldersUtil {
+        createLoadingViewHolder(R.layout.view_holder_loading) { LoadViewHolder(it) }
+        create(R.layout.view_holder_header) { HeaderViewHolder(it) }
+        create(R.layout.view_holder_text) {
+            TextViewHolder(it, object : TextViewHolderListener {
+                override fun onTextClicked(user: User, position: Int) {
+                    user.name = (0..1000).random().toString()
+                    user.surName = (0..1000).random().toString()
+                    rvAdapter.update(user, position)
+                }
+
+                override fun onLongClickedViewHolder(item: User, position: Int) {
+                    rvAdapter.delete(position)
+                }
+            })
+        }
+        create(R.layout.view_holder_image) {
+            ImageViewHolder(it, object : BaseViewHolderListener<Image> {
+                override fun onClickViewHolder(item: Image, position: Int) {
+                    val i = (0..100000).random()
+                    item.backgroundResId = if (i % 2 == 0) {
+                        R.drawable.ic_launcher_foreground
+                    } else {
+                        R.drawable.ic_launcher_background
+                    }
+                    rvAdapter.notifyItemChanged(position)
+                }
+
+                override fun onLongClickedViewHolder(item: Image, position: Int) {
+                    rvAdapter.add(
+                        User(
+                            System.currentTimeMillis().toInt(),
+                            "New",
+                            "User"
+                        ),
+                        position
+                    )
+                }
+            })
+        }
+        create(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +75,17 @@ class MainActivity : AppCompatActivity(), OnPageChanged {
         open_btn.setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
         }
+        handler = Handler()
+        rv_example_refresher_srl.setOnRefreshListener {
+            rvAdapter.refresh()
+            updateList(generateList(0, 25))
+            rv_example_refresher_srl.isRefreshing = false
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler?.removeCallbacks(runnable)
     }
 
     private fun createRecyclerView() {
@@ -35,51 +95,9 @@ class MainActivity : AppCompatActivity(), OnPageChanged {
                 RecyclerView.VERTICAL,
                 false
             )
-            adapter = createMultipleTypesAdapter {
+            rvAdapter = viewHoldersUtil.createMultipleTypesAdapter {
                 addAll(generateList(0, 25))
-//                addNewItems(list1)
-                viewHoldersUtil {
-                    createLoadingViewHolder(R.layout.view_holder_loading) { LoadViewHolder(it) }
-                    create(R.layout.view_holder_header) { HeaderViewHolder(it) }
-                    create(R.layout.view_holder_text) {
-                        TextViewHolder(it, object : TextViewHolderListener {
-                            override fun onTextClicked(user: User, position: Int) {
-                                user.name = (0..1000).random().toString()
-                                user.surName = (0..1000).random().toString()
-                                update(user, position)
-                            }
-
-                            override fun onLongClickedViewHolder(item: User, position: Int) {
-                                delete(position)
-                            }
-                        })
-                    }
-                    create(R.layout.view_holder_image) {
-                        ImageViewHolder(it, object : BaseViewHolderListener<Image> {
-                            override fun onClickViewHolder(item: Image, position: Int) {
-                                val i = (0..100000).random()
-                                item.backgroundResId = if (i % 2 == 0) {
-                                    R.drawable.ic_launcher_foreground
-                                } else {
-                                    R.drawable.ic_launcher_background
-                                }
-                                notifyItemChanged(position)
-                            }
-
-                            override fun onLongClickedViewHolder(item: Image, position: Int) {
-                                add(
-                                    User(
-                                        System.currentTimeMillis().toInt(),
-                                        "New",
-                                        "User"
-                                    ),
-                                    position
-                                )
-                            }
-                        })
-                    }
-                    create(R.layout.view_holder_big_text) { BigTextViewHolder(it) }
-                }
+                onScrollingObserver = onScrollListener
                 onItemsSame = { oldItem, newItem ->
                     when {
                         oldItem is User && newItem is User -> oldItem.id == newItem.id
@@ -94,12 +112,16 @@ class MainActivity : AppCompatActivity(), OnPageChanged {
                     }
                 }
             }
-            addOnScrollListener(RvScrollListener(this@MainActivity))
+            adapter = rvAdapter
+            addOnScrollListener(onScrollListener)
         }
     }
 
     override fun onPageChanged(page: Int) {
-        updateList(generateList(page * 25 + 1, 25))
+        runnable = Runnable {
+            updateList(if (page <= 3) generateList(page * 25 + 1, 25) else ArrayList())
+        }
+        handler?.postDelayed(runnable, 1000)
     }
 
     /**
@@ -107,7 +129,7 @@ class MainActivity : AppCompatActivity(), OnPageChanged {
      */
 
     private fun updateList(items: ArrayList<ViewHolderItem>) {
-        with(rv_example.adapter as MultipleTypesAdapter) {
+        with(rvAdapter) {
 //            updateAll(items)
             addAll(items)
         }

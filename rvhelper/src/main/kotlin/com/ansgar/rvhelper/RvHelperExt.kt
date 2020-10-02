@@ -2,6 +2,7 @@ package com.ansgar.rvhelper
 
 import com.ansgar.rvhelper.adapters.MultipleTypesAdapter
 import com.ansgar.rvhelper.adapters.SingleTypeAdapter
+import com.ansgar.rvhelper.utils.ViewHoldersUtil
 
 /**
  * Extension class that provide the ability to create adapter for Recycler View
@@ -15,10 +16,10 @@ import com.ansgar.rvhelper.adapters.SingleTypeAdapter
  * @param build [SingleTypeAdapter] instance.
  * @return [SingleTypeAdapter] adapter for only one view holder type.
  */
-inline fun <VM> createSingleTypeAdapter(
+inline fun <VM> ViewHoldersUtil.createSingleTypeAdapter(
     build: SingleTypeAdapter<VM>.() -> Unit
 ): SingleTypeAdapter<VM> {
-    val singleTypeAdapter = SingleTypeAdapter<VM>()
+    val singleTypeAdapter = SingleTypeAdapter<VM>(this)
     singleTypeAdapter.build()
     return singleTypeAdapter
 }
@@ -31,14 +32,29 @@ inline fun <VM> createSingleTypeAdapter(
  * @param build [MultipleTypesAdapter] instance.
  * @return [MultipleTypesAdapter] adapter for multiple view holders types.
  */
-inline fun createMultipleTypesAdapter(build: MultipleTypesAdapter.() -> Unit): MultipleTypesAdapter {
-    val rvAdapter = MultipleTypesAdapter()
+inline fun ViewHoldersUtil.createMultipleTypesAdapter(
+    build: MultipleTypesAdapter.() -> Unit
+): MultipleTypesAdapter {
+    val rvAdapter = MultipleTypesAdapter(this)
     rvAdapter.build()
     return rvAdapter
 }
 
-inline fun <T : MultipleTypesAdapter> createMultipleTypesAdapter(clazz: Class<T>, build: T.() -> Unit): T {
-    val adapter = clazz.newInstance()
-    adapter.build()
-    return adapter
+/**
+ * Create an instance of [ViewHoldersUtil] a class that contains view holders and listeners.
+ * @param build instance of [ViewHoldersUtil]
+ */
+inline fun viewHoldersUtil(build: ViewHoldersUtil.() -> Unit): ViewHoldersUtil {
+    val viewHoldersUtil = ViewHoldersUtil()
+    viewHoldersUtil.build()
+    return viewHoldersUtil
 }
+
+//inline fun <T : MultipleTypesAdapter> createMultipleTypesAdapter(
+//    clazz: Class<T>,
+//    build: T.() -> Unit
+//): T {
+//    val adapter = clazz.newInstance()
+//    adapter.build()
+//    return adapter
+//}

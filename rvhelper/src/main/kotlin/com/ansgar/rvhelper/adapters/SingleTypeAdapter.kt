@@ -1,6 +1,8 @@
 package com.ansgar.rvhelper.adapters
 
-class SingleTypeAdapter<VM> : BaseAdapter<VM>() {
+import com.ansgar.rvhelper.utils.ViewHoldersUtil
+
+class SingleTypeAdapter<VM>(viewHoldersUtil: ViewHoldersUtil) : BaseAdapter<VM>(viewHoldersUtil) {
 
     override fun getItemViewType(position: Int): Int = viewHoldersUtil.viewHolders.keyAt(0)
 

@@ -3,10 +3,32 @@ package com.ansgar.recyclerviewdemo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ansgar.rvhelper.adapters.SingleTypeAdapter
 import com.ansgar.rvhelper.createSingleTypeAdapter
+import com.ansgar.rvhelper.viewHoldersUtil
 import kotlinx.android.synthetic.main.activity_second.*
 
 class SecondActivity : AppCompatActivity() {
+
+    lateinit var rvAdapter: SingleTypeAdapter<MainActivity.User>
+    private var viewHoldersUtil = viewHoldersUtil {
+        create(R.layout.view_holder_text) {
+            TextViewHolder(it, object : TextViewHolderListener {
+                override fun onTextClicked(user: MainActivity.User, position: Int) {
+                    user.name = "Hey "
+                    user.surName = "${System.currentTimeMillis()}"
+                    rvAdapter.notifyItemChanged(position)
+                }
+
+                override fun onLongClickedViewHolder(
+                    item: MainActivity.User,
+                    position: Int
+                ) {
+                    rvAdapter.delete(position)
+                }
+            })
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,27 +43,10 @@ class SecondActivity : AppCompatActivity() {
                 LinearLayoutManager.VERTICAL,
                 false
             )
-            adapter = createSingleTypeAdapter<MainActivity.User> {
+            rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
                 addAll(generateList(0, 20))
-                viewHoldersUtil {
-                    create(R.layout.view_holder_text) {
-                        TextViewHolder(it, object : TextViewHolderListener {
-                            override fun onTextClicked(user: MainActivity.User, position: Int) {
-                                user.name = "Hey "
-                                user.surName = "${System.currentTimeMillis()}"
-                                notifyItemChanged(position)
-                            }
-
-                            override fun onLongClickedViewHolder(
-                                item: MainActivity.User,
-                                position: Int
-                            ) {
-                                delete(position)
-                            }
-                        })
-                    }
-                }
             }
+            adapter = rvAdapter
         }
     }
 
