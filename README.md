@@ -10,9 +10,9 @@ This is a handy extension for the RecyclerView Adapter written in kotlin that us
 
 ## How to use
 
-- [Set up build.gradle](#dependencies)
-2. [Single type adapter]()
-3. [View holder listener]()
+- [Dependencies](#dependencies)
+2. [Single type adapter](#singly-view-type-adapter)
+3. [View holder listener](#view-holder-listener)
 4. [Multiple view types adapter]()
    a. [Default loading view holder]()
 
@@ -71,6 +71,7 @@ class UserViewHolder(view: View) : BaseViewHolder<User>(view) {
 ```
 <img src="https://i.imgur.com/FlSqweZ.png" width="250" height="430" />
 
+## View holder listener
 This library is also provide the ability to manage button click events inside your View Holder. There is an interface for this BaseViewHolderListener where two basic methods are defined onClick and onLongClick. If you need additional events you can create your own listener and extend BaseViewHolderListener. You can pass listener in create method when you define your View Holder.
 Base Recycler View provide few method that you can use to update your model in list (for example ```rvAdapter.update(item, position)```). After changes
 ```kotlin
