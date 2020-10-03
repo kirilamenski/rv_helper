@@ -149,6 +149,6 @@ private fun createRecyclerView() {
     }
 }
 ```
-<img src="https://i.imgur.com/8vW72Ch.mp4" width="250" height="430"/>
+<img src="https://i.imgur.com/zOQcSPf.gif" width="250" height="430"/>
 
 ## Update list with DiffUtil
