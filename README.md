@@ -11,10 +11,10 @@ This is a handy extension for the RecyclerView Adapter written in kotlin that us
 ## How to use
 
 - [Dependencies](#dependencies)
-2. [Single type adapter](#singly-view-type-adapter)
-3. [View holder listener](#view-holder-listener)
-4. [Multiple view types adapter]()
-   a. [Default loading view holder]()
+- [Single type adapter](#singly-view-type-adapter)
+- [View holder listener](#view-holder-listener)
+- [Multiple view types adapter]()
+   - [Default loading view holder]()
 
 
 ## Dependencies
