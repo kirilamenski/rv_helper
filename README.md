@@ -10,6 +10,14 @@ This is a handy extension for the RecyclerView Adapter written in kotlin that us
 
 ## How to use
 
+1. [Set up build.gradle]()
+2. [Single type adapter]()
+3. [View holder listener]()
+4. [Multiple view types adapter]()
+   a. [Default loading view holder]()
+
+
+### Set up build.gradle
 At the following code to your project level build.gradle file
 ```gradle
 allprojects {
@@ -25,9 +33,18 @@ dependencies {
 }
 ```
 
-## How to use
 ### Singly view type adapter
+You should create ViewHoldersUtil class where you can create your view holder class. viewHoldersUtil {} will return you container of your view holders then you can call adapter by createSingleTypeAdapter. To add view holder to lists in viewHoldersUtil you need to call create method and pass layoutResId and define View Holder in callback. That callback called when onCreateViewHolder in RecyclerView.Adapter executed and returns the view created by LayoutInflater.
+Еo create an adapter you must call createSingleTypeAdapter{} and define the type of model that will be stored in the list. In createSingleTypeAdapter block you can manage RecycleView.Adapter. 
+There are several methods here by default. For example ``` addAll(fakeUsers)``` it allow you to pass your data to the list in adapter.
 ```kotlin
+private val viewHoldersUtil = viewHoldersUtil {
+    create(R.layout.view_holder_user) { view-> UserViewHolder(view) }
+}
+private lateinit var rvAdapter: SingleTypeAdapter<User>
+
+...
+
 private fun createRecyclerView() {
     with(single_type_adapter_rv) {
         layoutManager = LinearLayoutManager(
@@ -35,40 +52,34 @@ private fun createRecyclerView() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        // viewHoldersUtil is a helper class that contains your view holders and where you should define the view holders
-        adapter = viewHoldersUtil {
-            // you need to call create function and pass @LayoutRes layoutResId and you view holder class
-            create(R.layout.view_holder_user) { UserViewHolder(it) }
-        }.createSingleTypeAdapter<User> { // <- returns adapter for your list
-            // to pass values to a list
+        rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
             addAll(getFakeUsers())
         }
+        adapter = rvAdapter
     }
 }
-    
-// Your View Holder Class should extend BaseViewHolder<User>(view)
+```
+When you create your View Holder class you should extend BaseViewHolder, define your model type and override bindModel. In this method you can bind values to ui components
+```kotlin 
 class UserViewHolder(view: View) : BaseViewHolder<User>(view) {
-  // bind model called in RecyclerView.Adapter when onBindViewHolder is executed
-  // here you can bind values to your components
   override fun bindModel(item: User) {
       with(itemView) {
-          vh_user_name_tv.text = item.name
+          user_name_tv.text = item.name
       }
   }
 }
 ```
 <img src="https://i.imgur.com/FlSqweZ.png" width="250" height="430" />
 
-Lets change code if you want to control the click of you views:
+This library is also provide the ability to manage button click events inside your View Holder. There is an interface for this BaseViewHolderListener where two basic methods are defined onClick and onLongClick. If you need additional events you can create your own listener and extend BaseViewHolderListener. You can pass listener in create method when you define your View Holder.
+Base Recycler View provide few method that you can use to update your model in list (for example ```rvAdapter.update(item, position)```). After changes
 ```kotlin
-// viewHoldersUtil is a helper class that contains your view holders and where you should define the view holders
 private val viewHoldersUtil = viewHoldersUtil {
-    // you need to call create function and pass @LayoutRes layoutResId and you view holder class
-    create(R.layout.view_holder_user) {
-        UserViewHolder(it, object : UserViewHolderListener {
+    create(R.layout.view_holder_user) { view-> 
+        UserViewHolder(view, object : UserViewHolderListener {
             override fun onClickViewHolder(item: User, position: Int) {
                 item.name = "User name changed"
-                    rvAdapter.update(item, position) // <- function defined in base adapter class to allow update items in the list.
+                    rvAdapter.update(item, position)
                 }
             })
         }
@@ -84,9 +95,8 @@ private fun createRecyclerView() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        rvAdapter = viewHoldersUtil.createSingleTypeAdapter { // <- returns adapter for your list
-        // to pass values to a list
-        addAll(getFakeUsers())
+        rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
+            addAll(getFakeUsers())
         }
         adapter = rvAdapter
     }
