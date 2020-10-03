@@ -80,8 +80,8 @@ private val viewHoldersUtil = viewHoldersUtil {
     create(R.layout.view_holder_user) { view-> 
         UserViewHolder(view, object : UserViewHolderListener {
             override fun onClickViewHolder(item: User, position: Int) {
-                item.name = "User name changed"
-                    rvAdapter.update(item, position)
+                  item.name = "User name changed"
+                  rvAdapter.update(item, position)
                 }
             })
         }
