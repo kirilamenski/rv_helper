@@ -108,7 +108,7 @@ private fun createRecyclerView() {
 <img src="https://i.imgur.com/yloCOnZ.gif" width="250" height="430"/>
 
 ## Multiple view types adapter
-The main difference between singleTypeAdapter and multipleTypeAdapter the main difference is that to create a list with many types, your models must inherit ViewHolderItem class. This class contains type which is @LayoutRes of view holder layout.
+The main difference between singleTypeAdapter and multipleTypeAdapter is that to create a list with many types, your models must inherit ViewHolderItem class. This class contains type which is @LayoutRes of view holder layout.
 ```kotlin
 data class ExampleUser(
     var id: Int,
