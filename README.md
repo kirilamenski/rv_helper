@@ -10,14 +10,14 @@ This is a handy extension for the RecyclerView Adapter written in kotlin that us
 
 ## How to use
 
-1. [Set up build.gradle]()
+- [Set up build.gradle](#set-up-build.gradle)
 2. [Single type adapter]()
 3. [View holder listener]()
 4. [Multiple view types adapter]()
    a. [Default loading view holder]()
 
 
-### Set up build.gradle
+## set-up-build.gradle
 At the following code to your project level build.gradle file
 ```gradle
 allprojects {
@@ -33,7 +33,7 @@ dependencies {
 }
 ```
 
-### Singly view type adapter
+## Singly view type adapter
 You should create ViewHoldersUtil class where you can create your view holder class. viewHoldersUtil {} will return you container of your view holders then you can call adapter by createSingleTypeAdapter. To add view holder to lists in viewHoldersUtil you need to call create method and pass layoutResId and define View Holder in callback. That callback called when onCreateViewHolder in RecyclerView.Adapter executed and returns the view created by LayoutInflater.
 Еo create an adapter you must call createSingleTypeAdapter{} and define the type of model that will be stored in the list. In createSingleTypeAdapter block you can manage RecycleView.Adapter. 
 There are several methods here by default. For example ``` addAll(fakeUsers)``` it allow you to pass your data to the list in adapter.
@@ -46,15 +46,15 @@ private lateinit var rvAdapter: SingleTypeAdapter<User>
 ...
 
 private fun createRecyclerView() {
+    rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
+            addAll(getFakeUsers())
+    }
     with(single_type_adapter_rv) {
         layoutManager = LinearLayoutManager(
             this@SingleTypeAdapterActivity,
             LinearLayoutManager.VERTICAL,
             false
         )
-        rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
-            addAll(getFakeUsers())
-        }
         adapter = rvAdapter
     }
 }
@@ -89,15 +89,15 @@ private lateinit var rvAdapter: SingleTypeAdapter<User>
 ...
 
 private fun createRecyclerView() {
+    rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
+            addAll(getFakeUsers())
+    }
     with(single_type_adapter_rv) {
         layoutManager = LinearLayoutManager(
             this@SingleTypeAdapterActivity,
             LinearLayoutManager.VERTICAL,
             false
         )
-        rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
-            addAll(getFakeUsers())
-        }
         adapter = rvAdapter
     }
 }
