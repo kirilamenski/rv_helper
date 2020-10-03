@@ -104,4 +104,4 @@ private fun createRecyclerView() {
 }
 ...
 ```
-![](https://i.imgur.com/yloCOnZ.gif)
+<img src="https://i.imgur.com/yloCOnZ.gif" width="250" height="430"/>
