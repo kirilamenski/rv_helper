@@ -10,14 +10,14 @@ This is a handy extension for the RecyclerView Adapter written in kotlin that us
 
 ## How to use
 
-- [Set up build.gradle](#set-up-build.gradle)
+- [Set up build.gradle](#dependencies)
 2. [Single type adapter]()
 3. [View holder listener]()
 4. [Multiple view types adapter]()
    a. [Default loading view holder]()
 
 
-## set-up-build.gradle
+## Dependencies
 At the following code to your project level build.gradle file
 ```gradle
 allprojects {
