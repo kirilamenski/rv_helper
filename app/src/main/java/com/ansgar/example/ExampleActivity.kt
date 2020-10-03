@@ -3,30 +3,25 @@ package com.ansgar.example
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ansgar.example.holders.ImageViewHolder
+import com.ansgar.example.holders.TextViewHolder
 import com.ansgar.example.holders.UserViewHolder
 import com.ansgar.example.holders.UserViewHolderListener
+import com.ansgar.example.models.ExampleImage
+import com.ansgar.example.models.ExampleText
 import com.ansgar.example.models.ExampleUser
+import com.ansgar.rvhelper.adapters.MultipleTypesAdapter
 import com.ansgar.rvhelper.adapters.SingleTypeAdapter
+import com.ansgar.rvhelper.createMultipleTypesAdapter
 import com.ansgar.rvhelper.createSingleTypeAdapter
+import com.ansgar.rvhelper.models.ViewHolderItem
 import com.ansgar.rvhelper.viewHoldersUtil
 import com.ansgar.rvhelperexample.R
 import kotlinx.android.synthetic.main.example_activity.*
 
-class ExampleActivity: AppCompatActivity() {
+class ExampleActivity : AppCompatActivity() {
 
-    // viewHoldersUtil is a helper class that contains your view holders and where you should define the view holders
-    private val viewHoldersUtil = viewHoldersUtil {
-        // you need to call create function and pass @LayoutRes layoutResId and you view holder class
-        create(R.layout.view_holder_user) {
-            UserViewHolder(it, object : UserViewHolderListener {
-                override fun onClickViewHolder(item: ExampleUser, position: Int) {
-                    item.name = "User name changed"
-                    rvAdapter.update(item, position)
-                }
-            })
-        }
-    }
-    private lateinit var rvAdapter: SingleTypeAdapter<ExampleUser>
+//    private lateinit var rvAdapter: SingleTypeAdapter<ExampleUser>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,24 +30,51 @@ class ExampleActivity: AppCompatActivity() {
     }
 
     private fun createRecyclerView() {
-        with(example_Rv) {
+//        rvAdapter = viewHoldersUtil {
+//            create(R.layout.view_holder_user) {
+//                UserViewHolder(it, object : UserViewHolderListener {
+//                    override fun onClickViewHolder(item: ExampleUser, position: Int) {
+//                        item.name = "User name changed"
+//                        rvAdapter.update(item, position)
+//                    }
+//                })
+//            }
+//        }.createSingleTypeAdapter { // <- returns adapter for your list
+//            addAll(getFakeUsers())
+//        }
+        rvAdapter = viewHoldersUtil.createMultipleTypesAdapter {
+            addAll(getFakeUsers())
+        }
+        with(example_rv) {
             layoutManager = LinearLayoutManager(
                 this@ExampleActivity,
                 LinearLayoutManager.VERTICAL,
                 false
             )
-            rvAdapter = viewHoldersUtil.createSingleTypeAdapter { // <- returns adapter for your list
-                // to pass values to a list
-                addAll(getFakeUsers())
-            }
             adapter = rvAdapter
         }
     }
 
-    private fun getFakeUsers(): ArrayList<ExampleUser> {
-        val arrayList = ArrayList<ExampleUser>()
+    private lateinit var rvAdapter: MultipleTypesAdapter
+    private val viewHoldersUtil = viewHoldersUtil {
+        create(R.layout.view_holder_user) { view -> UserViewHolder(view) }
+        create(R.layout.view_holder_image) { view -> ImageViewHolder(view) }
+        create(R.layout.view_holder_text) { view -> TextViewHolder(view) }
+    }
+
+    private fun getFakeUsers(): ArrayList<ViewHolderItem> {
+        val arrayList = ArrayList<ViewHolderItem>()
         for (i in 1..50) {
-            arrayList.add(ExampleUser(i, "$i User name", "User last name"))
+            when {
+                i % 5 == 0 -> arrayList.add(
+                    ExampleImage(
+                        R.drawable.ic_launcher_background,
+                        "$i This is view holder with text and images"
+                    )
+                )
+                i % 3 == 0 -> arrayList.add(ExampleText("$i This is View Holder with text"))
+                else -> arrayList.add(ExampleUser(i, "$i User name", "User last name"))
+            }
         }
         return arrayList
     }
