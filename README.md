@@ -153,7 +153,7 @@ private fun createRecyclerView() {
 <img src="https://i.imgur.com/zOQcSPf.gif" width="250" height="430"/>
 
 ## Default loading view holder
-If your project use pagination and you want to add Loading View Holder at the bottom of list you can modified cod by following:
+If your project use pagination and you want to add Loading View Holder at the bottom of the list you can modified code by following:
 ```kotlin
 private val viewHoldersUtil = viewHoldersUtil {
     create(R.layout.view_holder_user) { view -> UserViewHolder(view) }
