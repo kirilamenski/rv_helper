@@ -14,7 +14,7 @@ This is a handy extension for the RecyclerView Adapter written in kotlin that us
 - [Single view type adapter](#single-view-type-adapter)
 - [View holder listener](#view-holder-listener)
 - [Multiple view types adapter](#multiple-view-types-adapter)
-   - [Default loading view holder]()
+   - [Default loading view holder](##efault-loading-view-holder)
    - [Refresh list](#refresh-list)
 - [Update list with DiffUtil](#update-list-with-diff-util)
 
@@ -152,7 +152,7 @@ private fun createRecyclerView() {
 ```
 <img src="https://i.imgur.com/zOQcSPf.gif" width="250" height="430"/>
 
-## Update list with DiffUtil
+## Default loading view holder
 If your project use pagination and you want to add Loading View Holder at the bottom of list you can modified cod by following:
 ```kotlin
 private val viewHoldersUtil = viewHoldersUtil {
@@ -202,3 +202,4 @@ private fun createRecyclerView() {
 > :warning: **WARNING!** Keep in mind that the default holder does not support the timeout error. You can implement it yourself using some Handler where you can call ```rvAdapter.deleteLoadingViewHolder()```. It will remove the last view holder if it is the DefaultLoadingViewHolder (or your custom loading view holder).
 
 ## Refresh list
+## Update list with DiffUtil
