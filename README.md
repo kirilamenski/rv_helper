@@ -175,9 +175,9 @@ When you have scrolled to the very bottom and there are no more values in the an
 ```kotlin
 private val onRvScrollListener = RvScrollListener(object : OnPageChanged {
     override fun onPageChanged(page: Int) {
-        // At first time this callback return page = 1. N is your desired number of values.
+        // At first time this callback return page == 1. N is your desired number of values.
         // Condition added just for example when new data is missing.
-        updateList(if(page < 3) getFakeUsers(page * 20 + 1) else ArrayList())
+        updateList(if(page < 3) getFakeUsers(page * 20) else ArrayList())
     }
 })
     
