@@ -15,6 +15,7 @@ This is a handy extension for the RecyclerView Adapter written in kotlin that us
 - [View holder listener](#view-holder-listener)
 - [Multiple view types adapter](#multiple-view-types-adapter)
    - [Default loading view holder]()
+   - [Refresh list](#refresh-list)
 - [Update list with DiffUtil](#update-list-with-diff-util)
 
 
@@ -152,3 +153,52 @@ private fun createRecyclerView() {
 <img src="https://i.imgur.com/zOQcSPf.gif" width="250" height="430"/>
 
 ## Update list with DiffUtil
+If your project use pagination and you want to add Loading View Holder at the bottom of list you can modified cod by following:
+```kotlin
+private val viewHoldersUtil = viewHoldersUtil {
+    create(R.layout.view_holder_user) { view -> UserViewHolder(view) }
+    create(R.layout.view_holder_image) { view -> ImageViewHolder(view) }
+    create(R.layout.view_holder_text) { view -> TextViewHolder(view) }
+    createLoadingViewHolder { view-> DefaultLoadingViewHolder(view) } //This will add default loading to your list
+}
+```
+You can also add your own custom loading
+```kotlin
+private val viewHoldersUtil = viewHoldersUtil {
+    ...
+    createLoadingViewHolder(R.layout.you_custom_view_holder) { view -> CustomViewHolder(view) }
+}
+```
+We also need to know when the list was scrolled to the bottom. To archive this we should add callback to RecyclerView ```RecyclerView.addOnScrollListener()```.
+Also, when you create adapter you can add scroll observer to BaseAdapter. It will help you to not repeat request if previous response was empty.
+When you have scrolled to the very bottom and there are no more values in the answer, you can remove the default loading view holder by sending an empty list.
+```kotlin
+private val onRvScrollListener = RvScrollListener(object : OnPageChanged {
+    override fun onPageChanged(page: Int) {
+        // At first time this callback return page = 1. N is your desired number of values.
+        // Condition added just for example when new data is missing.
+        updateList(if(page < 3) getFakeUsers(page * 20 + 1) else ArrayList())
+    }
+})
+    
+private fun createRecyclerView() {
+    rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
+        addAll(getFakeUsers())
+        onScrollingObserver = onRvScrollListener // Adding scroll observer to adapter
+    }
+    with(single_type_adapter_rv) {
+        layoutManager = LinearLayoutManager(
+            this@SingleTypeAdapterActivity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        adapter = rvAdapter
+        addOnScrollListener(onRvScrollListener) // Adding scroll listener to RecyclerView
+    }
+}
+```
+<img src="https://i.imgur.com/nAmVz7O.gif" width="250" height="430"/>
+
+> :warning: **WARNING!** Keep in mind that the default holder does not support the timeout error. You can implement it yourself using some Handler where you can call ```rvAdapter.deleteLoadingViewHolder()```. It will remove the last view holder if it is the DefaultLoadingViewHolder (or your custom loading view holder).
+
+## Refresh list
