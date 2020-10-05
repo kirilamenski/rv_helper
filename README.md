@@ -14,7 +14,7 @@ This is a handy extension for the RecyclerView Adapter written in kotlin that us
 - [Single view type adapter](#single-view-type-adapter)
 - [View holder listener](#view-holder-listener)
 - [Multiple view types adapter](#multiple-view-types-adapter)
-   - [Default loading view holder](##efault-loading-view-holder)
+   - [Default loading view holder](#default-loading-view-holder)
    - [Refresh list](#refresh-list)
 - [Update list with DiffUtil](#update-list-with-diff-util)
 
