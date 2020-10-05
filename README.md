@@ -197,7 +197,7 @@ private fun createRecyclerView() {
     }
 }
 ```
-<img src="https://i.imgur.com/nAmVz7O.gif" width="250" height="430"/>
+<img src="https://i.imgur.com/JeaYDea.gif" width="250" height="430"/>
 
 > :warning: **WARNING!** Keep in mind that the default holder does not support the timeout error. You can implement it yourself using some Handler where you can call ```rvAdapter.deleteLoadingViewHolder()```. It will remove the last view holder if it is the DefaultLoadingViewHolder (or your custom loading view holder).
 
