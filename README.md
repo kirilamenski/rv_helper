@@ -30,7 +30,7 @@ allprojects {
 and to your app level build.gradle:
 ```gradle
 dependencies {
-    implementation 'com.github.User:Repo:Tag'
+    implementation 'com.github.kirilamenski:rv_helper:1.0.2'
 }
 ```
 
