@@ -65,9 +65,7 @@ When you create your View Holder class you should extend BaseViewHolder, define 
 ```kotlin 
 class UserViewHolder(view: View) : BaseViewHolder<User>(view) {
   override fun bindModel(item: User) {
-      with(itemView) {
-          user_name_tv.text = item.name
-      }
+      itemView.user_name_tv.text = item.name
   }
 }
 ```
@@ -112,9 +110,9 @@ private fun createRecyclerView() {
 The main difference between singleTypeAdapter and multipleTypeAdapter is that to create a list with many types, your models must inherit ViewHolderItem class. This class contains type which is @LayoutRes of view holder layout.
 ```kotlin
 data class ExampleUser(
-    var id: Int,
-    var name: String,
-    var surName: String
+    val id: Int,
+    val name: String,
+    val surName: String
 ): ViewHolderItem(R.layout.view_holder_user)
 
 data class ExampleText(
