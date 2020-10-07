@@ -23,7 +23,7 @@ import com.ansgar.rvhelper.viewHoldersUtil
 import com.ansgar.rvhelperexample.R
 import kotlinx.android.synthetic.main.example_activity.*
 
-class ExampleActivity : AppCompatActivity() {
+class ExampleActivity : AppCompatActivity(), OnPageChanged {
 
     //    private lateinit var rvAdapter: SingleTypeAdapter<ExampleUser>
     private lateinit var rvAdapter: MultipleTypesAdapter
@@ -33,14 +33,7 @@ class ExampleActivity : AppCompatActivity() {
         create(R.layout.view_holder_text) { view -> TextViewHolder(view) }
         createLoadingViewHolder { DefaultLoadingViewHolder(it) }
     }
-    private val onRvScrollListener = RvScrollListener(object : OnPageChanged {
-        override fun onPageChanged(page: Int) {
-            runnable = Runnable {
-                updateList(if(page < 3) getFakeUsers(page * 20 + 1) else ArrayList())
-            }
-            handler?.postDelayed(runnable, 500)
-        }
-    })
+    private val onRvScrollListener = RvScrollListener(this)
 
     // Handler and runnable just to simulate latency of backend response
     private var handler: Handler? = null
@@ -51,11 +44,23 @@ class ExampleActivity : AppCompatActivity() {
         setContentView(R.layout.example_activity)
         createRecyclerView()
         handler = Handler()
+        rv_refresher_srl.setOnRefreshListener {
+            rvAdapter.refresh()
+            onPageChanged(0)
+            rv_refresher_srl.isRefreshing = false
+        }
     }
 
     override fun onDestroy() {
         runnable?.let { handler?.removeCallbacks(it) }
         super.onDestroy()
+    }
+
+    override fun onPageChanged(page: Int) {
+        runnable = Runnable {
+            updateList(if(page < 3) getFakeUsers(page * 20 + 1) else ArrayList())
+        }
+        handler?.postDelayed(runnable, 500)
     }
 
     private fun createRecyclerView() {
@@ -74,6 +79,12 @@ class ExampleActivity : AppCompatActivity() {
         rvAdapter = viewHoldersUtil.createMultipleTypesAdapter {
             addAll(getFakeUsers(1))
             onScrollingObserver = onRvScrollListener
+            onItemsSame = { oldItem, newItem ->
+                true
+            }
+            onContentSame = { oldItem, newItem ->
+                true
+            }
         }
         with(example_rv) {
             layoutManager = LinearLayoutManager(

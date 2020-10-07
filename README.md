@@ -157,7 +157,7 @@ private val viewHoldersUtil = viewHoldersUtil {
     create(R.layout.view_holder_user) { view -> UserViewHolder(view) }
     create(R.layout.view_holder_image) { view -> ImageViewHolder(view) }
     create(R.layout.view_holder_text) { view -> TextViewHolder(view) }
-    createLoadingViewHolder { view-> DefaultLoadingViewHolder(view) } //This will add default loading to your list
+    createLoadingViewHolder { view -> DefaultLoadingViewHolder(view) } //This will add default loading to your list
 }
 ```
 You can also add your own custom loading
@@ -200,4 +200,30 @@ private fun createRecyclerView() {
 > :warning: **WARNING!** Keep in mind that the default holder does not support the timeout error. You can implement it yourself using some Handler where you can call ```rvAdapter.deleteLoadingViewHolder()```. It will remove the last view holder if it is the DefaultLoadingViewHolder (or your custom loading view holder).
 
 ## Refresh list
+In xml wrap your RecyclerView in SwipeRefreshLayout:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv_refresher_srl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/example_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+```
+And set onRefreshListener:
+```kotlin
+rv_refresher_srl.setOnRefreshListener {
+    rvAdapter.refresh() // this method updates the list in the adapter 
+    updateList(fakeItems)
+    rv_refresher_srl.isRefreshing = false
+}
+```
+
+<img src="https://i.imgur.com/fpsxjfZ.gif" width="250" height="430"/>
+
 ## Update list with DiffUtil
+Also, this library provide the ability to update yourList with DiffUtil
