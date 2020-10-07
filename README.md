@@ -226,4 +226,29 @@ rv_refresher_srl.setOnRefreshListener {
 <img src="https://i.imgur.com/fpsxjfZ.gif" width="250" height="430"/>
 
 ## Update list with DiffUtil
-Also, this library provide the ability to update yourList with DiffUtil
+Also, this library provide the ability to update yourList with DiffUtil. To do this you need to define two callbacks ```onItemSame```, and ```onContentSame``` where you must write the necessary condition.
+```kotlin
+private fun createRecyclerView() {
+    rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
+        addAll(getFakeUsers())
+    }
+    with(single_type_adapter_rv) {
+        layoutManager = LinearLayoutManager(
+            this@SingleTypeAdapterActivity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        adapter = rvAdapter
+        onItemsSame = { oldItem, newItem ->
+            true
+        }
+        onContentSame = { oldItem, newItem ->
+            true
+        }
+    }
+}
+```
+rvAdapter has a method to update the list using DiffUtil
+```kotlin
+rvAdapter.updateAll(newItems)
+```
