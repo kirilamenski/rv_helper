@@ -8,8 +8,6 @@ This is a handy extension for the RecyclerView Adapter written in kotlin that us
 1. Creating lists with one type view and with several.
 2. Provide the ability to create loading view at the bottom of list by default.
 
-## How to use
-
 - [Dependencies](#dependencies)
 - [Single view type adapter](#single-view-type-adapter)
 - [View holder listener](#view-holder-listener)
@@ -175,7 +173,7 @@ private val onRvScrollListener = RvScrollListener(object : OnPageChanged {
     override fun onPageChanged(page: Int) {
         // At first time this callback return page == 1. N is your desired number of values.
         // Condition added just for example when new data is missing.
-        updateList(if(page < 3) getFakeUsers(page * 20) else ArrayList())
+        updateList(if(page < 3) getFakeUsers(page * N) else ArrayList())
     }
 })
     
