@@ -20,12 +20,11 @@ import kotlin.collections.ArrayList
 abstract class BaseAdapter<VM>(val viewHoldersUtil: ViewHoldersUtil) :
     RecyclerView.Adapter<BaseViewHolder<*>>(), AdapterActions<VM> {
     /**
-     * Main list which contain View Models [VM]. It is internal to use it only in package.
-     * All necessary methods should be defined in [AdapterActions] and implemented in base adapter
+     * Main list which contain View Models [VM].
+     * All necessary methods could be defined in [AdapterActions] and implemented in base adapter
      * class or in children classes([SingleTypeAdapter] or [MultipleTypesAdapter]).
      */
-    internal val items = ArrayList<VM>()
-
+    val items = ArrayList<VM>()
     var onItemsSame: ((oldItem: VM, newItem: VM) -> Boolean)? = null
     var onContentSame: ((oldItem: VM, newItem: VM) -> Boolean)? = null
     var onBindViewHolder: ((holder: BaseViewHolder<*>, position: Int) -> Unit)? = null
