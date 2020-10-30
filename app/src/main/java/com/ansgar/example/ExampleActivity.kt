@@ -7,14 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ansgar.example.holders.ImageViewHolder
 import com.ansgar.example.holders.TextViewHolder
 import com.ansgar.example.holders.UserViewHolder
-import com.ansgar.example.holders.UserViewHolderListener
 import com.ansgar.example.models.ExampleImage
 import com.ansgar.example.models.ExampleText
 import com.ansgar.example.models.ExampleUser
 import com.ansgar.rvhelper.adapters.MultipleTypesAdapter
-import com.ansgar.rvhelper.adapters.SingleTypeAdapter
 import com.ansgar.rvhelper.createMultipleTypesAdapter
-import com.ansgar.rvhelper.createSingleTypeAdapter
 import com.ansgar.rvhelper.holders.DefaultLoadingViewHolder
 import com.ansgar.rvhelper.models.ViewHolderItem
 import com.ansgar.rvhelper.scroll.OnPageChanged
