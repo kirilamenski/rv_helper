@@ -19,9 +19,6 @@ class ViewHoldersUtil {
     fun getOnVhCreated(viewType: Int) =
         viewHolders[viewType]?.onViewHolderCreated
 
-    //    fun getLayoutRes(simpleClassName: String) = experimentalViewHolders.firstOrNull {
-//        it.className == simpleClassName
-//    }?.layoutRes ?: R.layout.view_holder_error
     fun getLayoutRes(simpleClassName: String) =
         experimentalViewHolders[simpleClassName] ?: R.layout.view_holder_error
 
@@ -40,14 +37,6 @@ class ViewHoldersUtil {
         clazz: Class<VM>,
         onViewHolderCreated: (view: View) -> VH,
     ) {
-//        experimentalViewHolders.add(
-//            BaseRecyclerViewItem(
-//                onViewHolderCreated,
-//                null,
-//                clazz.simpleName,
-//                layoutRes
-//            )
-//        )
         experimentalViewHolders[clazz.simpleName] = layoutRes
         create(layoutRes, onViewHolderCreated)
     }
@@ -71,18 +60,6 @@ class ViewHoldersUtil {
         onViewHolderCreated: (view: View) -> VH
     ) {
         loadingLayoutResId = layoutRes
-//        experimentalViewHolders.add(
-//            BaseRecyclerViewItem(
-//                onViewHolderCreated,
-//                null,
-//                Any::class.java.simpleName,
-//                layoutRes
-//            )
-//        )
-//        viewHolders.put(
-//            layoutRes,
-//            BaseRecyclerViewItem<DefaultLoadingViewHolder, Any>(onViewHolderCreated)
-//        )
         create(layoutRes, DefaultLoading::class.java, onViewHolderCreated)
     }
 
