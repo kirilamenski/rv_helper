@@ -7,14 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ansgar.example.holders.ImageViewHolder
 import com.ansgar.example.holders.TextViewHolder
 import com.ansgar.example.holders.UserViewHolder
-import com.ansgar.example.holders.UserViewHolderListener
 import com.ansgar.example.models.ExampleImage
 import com.ansgar.example.models.ExampleText
 import com.ansgar.example.models.ExampleUser
 import com.ansgar.rvhelper.adapters.MultipleTypesAdapter
-import com.ansgar.rvhelper.adapters.SingleTypeAdapter
 import com.ansgar.rvhelper.createMultipleTypesAdapter
-import com.ansgar.rvhelper.createSingleTypeAdapter
 import com.ansgar.rvhelper.holders.DefaultLoadingViewHolder
 import com.ansgar.rvhelper.models.ViewHolderItem
 import com.ansgar.rvhelper.scroll.OnPageChanged
@@ -28,9 +25,9 @@ class ExampleActivity : AppCompatActivity(), OnPageChanged {
     //    private lateinit var rvAdapter: SingleTypeAdapter<ExampleUser>
     private lateinit var rvAdapter: MultipleTypesAdapter
     private val viewHoldersUtil = viewHoldersUtil {
-        create(R.layout.view_holder_user) { view -> UserViewHolder(view) }
-        create(R.layout.view_holder_image) { view -> ImageViewHolder(view) }
-        create(R.layout.view_holder_text) { view -> TextViewHolder(view) }
+        create(R.layout.view_holder_user, ExampleUser::class.java) { view -> UserViewHolder(view) }
+        create(R.layout.view_holder_image, ExampleImage::class.java) { view -> ImageViewHolder(view) }
+        create(R.layout.view_holder_text, ExampleText::class.java) { view -> TextViewHolder(view) }
         createLoadingViewHolder { DefaultLoadingViewHolder(it) }
     }
     private val onRvScrollListener = RvScrollListener(this)

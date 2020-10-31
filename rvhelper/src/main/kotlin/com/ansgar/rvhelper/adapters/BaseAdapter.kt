@@ -27,7 +27,7 @@ abstract class BaseAdapter<VM>(val viewHoldersUtil: ViewHoldersUtil) :
     val items = ArrayList<VM>()
     var onItemsSame: ((oldItem: VM, newItem: VM) -> Boolean)? = null
     var onContentSame: ((oldItem: VM, newItem: VM) -> Boolean)? = null
-    var onBindViewHolder: ((holder: BaseViewHolder<*>, position: Int) -> Unit)? = null
+    var onBindViewHolder: ((holder: BaseViewHolder<*>, item: VM, position: Int) -> Unit)? = null
     var onScrollingObserver: RvAdapterObserver? = null
 
     override fun getItemCount(): Int = items.size
@@ -51,11 +51,8 @@ abstract class BaseAdapter<VM>(val viewHoldersUtil: ViewHoldersUtil) :
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         holder as BaseViewHolder<VM>
         val item = items[position]
-//        rvAdapterHelper.getOnBindVh<BaseViewHolder<ViewHolderItem>, ViewHolderItem>(
-//            getItemViewType(position)
-//        )?.invoke(holder, item, position)
         holder.bindModel(item)
-        onBindViewHolder?.let { it(holder, position) }
+        onBindViewHolder?.let { it(holder, item, position) }
     }
 
     @CallSuper
