@@ -105,29 +105,29 @@ private fun createRecyclerView() {
 <img src="https://i.imgur.com/yloCOnZ.gif" width="250" height="430"/>
 
 ## Multiple view types adapter
-The main difference between singleTypeAdapter and multipleTypeAdapter is that to create a list with many types, your models must inherit ViewHolderItem class. This class contains type which is @LayoutRes of view holder layout.
+The main difference between singleTypeAdapter and multipleTypeAdapter is that to create a list with many types, your models must inherit ViewHolderItem class.
 ```kotlin
 data class ExampleUser(
     val id: Int,
     val name: String,
     val surName: String
-): ViewHolderItem(R.layout.view_holder_user)
+): ViewHolderItem()
 
 data class ExampleText(
     val text: String
-): ViewHolderItem(R.layout.view_holder_text)
+): ViewHolderItem()
 
 data class ExampleImage(
     @DrawableRes val drawableRes: Int,
     val imageTitle: String
-) : ViewHolderItem(R.layout.view_holder_example_image)
+) : ViewHolderItem()
 ```
 After that you need to create View Holders for these items
 ```kotlin
 private val viewHoldersUtil = viewHoldersUtil {
-    create(R.layout.view_holder_user) { view -> UserViewHolder(view) }
-    create(R.layout.view_holder_image) { view -> ImageViewHolder(view) }
-    create(R.layout.view_holder_text) { view -> TextViewHolder(view) }
+    create(R.layout.view_holder_user, ExampleUser::class.java) { view -> UserViewHolder(view) }
+    create(R.layout.view_holder_image, ExampleImage::class.java) { view -> ImageViewHolder(view) }
+    create(R.layout.view_holder_text, ExampleText::class.java) { view -> TextViewHolder(view) }
 }
 ```
 To create an adapter with many types you need to call createMultipleTypesAdapter instead of createSingleTypeAdapter
@@ -152,9 +152,9 @@ private fun createRecyclerView() {
 If your project use pagination and you want to add Loading View Holder at the bottom of the list you can modified code by following:
 ```kotlin
 private val viewHoldersUtil = viewHoldersUtil {
-    create(R.layout.view_holder_user) { view -> UserViewHolder(view) }
-    create(R.layout.view_holder_image) { view -> ImageViewHolder(view) }
-    create(R.layout.view_holder_text) { view -> TextViewHolder(view) }
+    create(R.layout.view_holder_user, ExampleUser::class.java) { view -> UserViewHolder(view) }
+    create(R.layout.view_holder_image, ExampleImage::class.java) { view -> ImageViewHolder(view) }
+    create(R.layout.view_holder_text, ExampleText::class.java) { view -> TextViewHolder(view) }
     createLoadingViewHolder { view -> DefaultLoadingViewHolder(view) } //This will add default loading to your list
 }
 ```
