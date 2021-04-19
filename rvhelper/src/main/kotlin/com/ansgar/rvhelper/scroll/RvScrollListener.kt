@@ -1,13 +1,15 @@
 package com.ansgar.rvhelper.scroll
 
+import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 
-class RvScrollListener(private val onPageChanged: OnPageChanged) : RecyclerView.OnScrollListener(),
+open class RvScrollListener(private val onPageChanged: OnPageChanged) : RecyclerView.OnScrollListener(),
     RvAdapterObserver {
 
     private var page: Int = 0
     private var stopScrolling: Boolean = false
 
+    @CallSuper
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
         super.onScrollStateChanged(recyclerView, newState)
         if (!recyclerView.canScrollVertically(1) && !stopScrolling) {
@@ -16,14 +18,12 @@ class RvScrollListener(private val onPageChanged: OnPageChanged) : RecyclerView.
         }
     }
 
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-        super.onScrolled(recyclerView, dx, dy)
-    }
-
+    @CallSuper
     override fun onNewItemEmpty() {
         stopScrolling = true
     }
 
+    @CallSuper
     override fun onRefresh() {
         page = 0
         stopScrolling = false
