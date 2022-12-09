@@ -57,7 +57,7 @@ class ExampleActivity : AppCompatActivity(), OnPageChanged {
         runnable = Runnable {
             updateList(if(page < 3) getFakeUsers(page * 20 + 1) else ArrayList())
         }
-        handler?.postDelayed(runnable, 500)
+        handler?.postDelayed(runnable!!, 500)
     }
 
     private fun createRecyclerView() {
