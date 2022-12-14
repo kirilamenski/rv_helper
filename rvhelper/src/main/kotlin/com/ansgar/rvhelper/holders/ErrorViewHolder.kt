@@ -2,8 +2,11 @@ package com.ansgar.rvhelper.holders
 
 import android.util.Log
 import android.view.View
+import com.ansgar.rvhelper.databinding.ViewHolderErrorBinding
 
-class ErrorViewHolder(view: View) : BaseViewHolder<Any>(view) {
+class ErrorViewHolder(
+    binding: ViewHolderErrorBinding
+) : BaseViewHolder<Any, ViewHolderErrorBinding>(binding) {
     override fun bindModel(item: Any) {
         Log.e(
             this::class.java.simpleName,

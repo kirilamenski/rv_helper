@@ -2,6 +2,7 @@ package com.ansgar.example
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ansgar.example.holders.ImageViewHolder
@@ -12,23 +13,45 @@ import com.ansgar.example.models.ExampleText
 import com.ansgar.example.models.ExampleUser
 import com.ansgar.rvhelper.adapters.MultipleTypesAdapter
 import com.ansgar.rvhelper.createMultipleTypesAdapter
+import com.ansgar.rvhelper.databinding.ViewHolderDefaultLoadingBinding
 import com.ansgar.rvhelper.holders.DefaultLoadingViewHolder
 import com.ansgar.rvhelper.models.ViewHolderItem
 import com.ansgar.rvhelper.scroll.OnPageChanged
 import com.ansgar.rvhelper.scroll.RvScrollListener
 import com.ansgar.rvhelper.viewHoldersUtil
 import com.ansgar.rvhelperexample.R
-import kotlinx.android.synthetic.main.example_activity.*
+import com.ansgar.rvhelperexample.databinding.ExampleActivityBinding
+import com.ansgar.rvhelperexample.databinding.ViewHolderImageBinding
+import com.ansgar.rvhelperexample.databinding.ViewHolderTextBinding
+import com.ansgar.rvhelperexample.databinding.ViewHolderUserBinding
 
 class ExampleActivity : AppCompatActivity(), OnPageChanged {
+
+    private lateinit var binding: ExampleActivityBinding
 
     //    private lateinit var rvAdapter: SingleTypeAdapter<ExampleUser>
     private lateinit var rvAdapter: MultipleTypesAdapter
     private val viewHoldersUtil = viewHoldersUtil {
-        create(R.layout.view_holder_user, ExampleUser::class.java) { view -> UserViewHolder(view) }
-        create(R.layout.view_holder_image, ExampleImage::class.java) { view -> ImageViewHolder(view) }
-        create(R.layout.view_holder_text, ExampleText::class.java) { view -> TextViewHolder(view) }
-        createLoadingViewHolder { DefaultLoadingViewHolder(it) }
+        create(R.layout.view_holder_user, ExampleUser::class.java) { parent ->
+            UserViewHolder(
+                ViewHolderUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+        }
+        create(R.layout.view_holder_image, ExampleImage::class.java) { parent ->
+            ImageViewHolder(
+                ViewHolderImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+        }
+        create(R.layout.view_holder_text, ExampleText::class.java) { parent ->
+            TextViewHolder(
+                ViewHolderTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+        }
+        createLoadingViewHolder { parent ->
+            DefaultLoadingViewHolder(
+                ViewHolderDefaultLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+        }
     }
     private val onRvScrollListener = RvScrollListener(this)
 
@@ -38,13 +61,15 @@ class ExampleActivity : AppCompatActivity(), OnPageChanged {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.example_activity)
+        binding = ExampleActivityBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         createRecyclerView()
         handler = Handler()
-        rv_refresher_srl.setOnRefreshListener {
+        binding.rvRefresherSrl.setOnRefreshListener {
             rvAdapter.refresh()
             onPageChanged(0)
-            rv_refresher_srl.isRefreshing = false
+            binding.rvRefresherSrl.isRefreshing = false
         }
     }
 
@@ -55,7 +80,7 @@ class ExampleActivity : AppCompatActivity(), OnPageChanged {
 
     override fun onPageChanged(page: Int) {
         runnable = Runnable {
-            updateList(if(page < 3) getFakeUsers(page * 20 + 1) else ArrayList())
+            updateList(if (page < 3) getFakeUsers(page * 20 + 1) else ArrayList())
         }
         handler?.postDelayed(runnable!!, 500)
     }
@@ -83,7 +108,7 @@ class ExampleActivity : AppCompatActivity(), OnPageChanged {
                 true
             }
         }
-        with(example_rv) {
+        with(binding.exampleRv) {
             layoutManager = LinearLayoutManager(
                 this@ExampleActivity,
                 LinearLayoutManager.VERTICAL,

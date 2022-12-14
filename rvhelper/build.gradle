@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
 
 android {
@@ -30,25 +29,9 @@ android {
         viewBinding true
     }
 
-}
+    namespace = 'com.ansgar.rvhelper'
 
-//task createPom {
-//    pom {
-//        project {
-//            groupId 'com.ansgar.rvhelper'
-//            artifactId 'com-android-rvhelper'
-//            version '1.1.5'
-//            inceptionYear '2020'
-//            licenses {
-//                license {
-//                    name 'The Apache Software License, Version 2.0'
-//                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    distribution 'repo'
-//                }
-//            }
-//        }
-//    }.writeTo("pom.xml")
-//}
+}
 
 publishing {
     publications {
@@ -56,8 +39,6 @@ publishing {
             groupId = 'com.ansgar.rvhelper'
             artifactId = 'com-android-rvhelper'
             version = '1.1.5'
-
-//            from components.java
         }
     }
 }

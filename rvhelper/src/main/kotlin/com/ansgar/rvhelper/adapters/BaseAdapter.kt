@@ -5,20 +5,19 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ansgar.rvhelper.R
+import com.ansgar.rvhelper.databinding.ViewHolderErrorBinding
 import com.ansgar.rvhelper.holders.BaseViewHolder
 import com.ansgar.rvhelper.holders.ErrorViewHolder
 import com.ansgar.rvhelper.scroll.RvAdapterObserver
 import com.ansgar.rvhelper.utils.RvAdapterDiffUtil
 import com.ansgar.rvhelper.utils.ViewHoldersUtil
-import kotlin.collections.ArrayList
 
 /**
  * Basic Adapter class. It is contain basic implementations of [AdapterActions].
  * @param VM is View Model which is in the [items].
  */
 abstract class BaseAdapter<VM>(val viewHoldersUtil: ViewHoldersUtil) :
-    RecyclerView.Adapter<BaseViewHolder<*>>(), AdapterActions<VM> {
+    RecyclerView.Adapter<BaseViewHolder<*, *>>(), AdapterActions<VM> {
     /**
      * Main list which contain View Models [VM].
      * All necessary methods could be defined in [AdapterActions] and implemented in base adapter
@@ -27,29 +26,23 @@ abstract class BaseAdapter<VM>(val viewHoldersUtil: ViewHoldersUtil) :
     val items = ArrayList<VM>()
     var onItemsSame: ((oldItem: VM, newItem: VM) -> Boolean)? = null
     var onContentSame: ((oldItem: VM, newItem: VM) -> Boolean)? = null
-    var onBindViewHolder: ((holder: BaseViewHolder<*>, item: VM, position: Int) -> Unit)? = null
+    var onBindViewHolder: ((holder: BaseViewHolder<*, *>, item: VM, position: Int) -> Unit)? = null
     var onScrollingObserver: RvAdapterObserver? = null
 
     override fun getItemCount(): Int = items.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> =
-        viewHoldersUtil.getOnVhCreated(viewType)?.invoke(
-            LayoutInflater.from(parent.context).inflate(
-                viewType,
-                parent,
-                false
-            )
-        ) ?: ErrorViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.view_holder_error,
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*, *> =
+        viewHoldersUtil.getOnVhCreated(viewType)?.invoke(parent) ?: ErrorViewHolder(
+            ViewHolderErrorBinding.inflate(
+                LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
 
     @CallSuper
-    override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
-        holder as BaseViewHolder<VM>
+    override fun onBindViewHolder(holder: BaseViewHolder<*, *>, position: Int) {
+        holder as BaseViewHolder<VM, *>
         val item = items[position]
         holder.bindModel(item)
         onBindViewHolder?.let { it(holder, item, position) }

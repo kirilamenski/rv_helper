@@ -1,9 +1,9 @@
 package com.ansgar.rvhelper.holders
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
-abstract class BaseViewHolder<VM>(view: View) : RecyclerView.ViewHolder(view) {
+abstract class BaseViewHolder<VM, B: ViewBinding>(binding: B) : RecyclerView.ViewHolder(binding.root) {
 
     abstract fun bindModel(item: VM)
 
