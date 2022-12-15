@@ -29,17 +29,21 @@ allprojects {
 and to your app level build.gradle:
 ```gradle
 dependencies {
-    implementation 'com.github.kirilamenski:rv_helper:1.0.2'
+    implementation 'com.github.kirilamenski:rv_helper:1.1.5'
 }
 ```
 
 ## Single view type adapter
-You should create ViewHoldersUtil class where you can create your view holder class. viewHoldersUtil {} will return you container of your view holders then you can call adapter by createSingleTypeAdapter. To add view holder to lists in viewHoldersUtil you need to call create method and pass layoutResId and define View Holder in callback. That callback called when onCreateViewHolder in RecyclerView.Adapter executed and returns the view created by LayoutInflater.
+You should create ViewHoldersUtil class where you can create your view holder class. viewHoldersUtil {} will return you container of your view holders then you can call adapter by createSingleTypeAdapter. To add view holder to lists in viewHoldersUtil you need to call create method and pass layoutResId and define View Holder in callback. That callback called when onCreateViewHolder in RecyclerView.Adapter executed and returns the parent of Recycler View.
 To create an adapter you must call createSingleTypeAdapter{} and define the type of model that will be stored in the list. In createSingleTypeAdapter block you can manage RecycleView.Adapter. 
 There are several methods here by default. For example ``` addAll(fakeUsers)``` it allow you to pass your data to the list in adapter.
 ```kotlin
 private val viewHoldersUtil = viewHoldersUtil {
-    create(R.layout.view_holder_user) { view-> UserViewHolder(view) }
+    create(R.layout.view_holder_user) { parent -> 
+      UserViewHolder(
+        ViewHolderUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+      )
+    }
 }
 private lateinit var rvAdapter: SingleTypeAdapter<User>
 
@@ -49,7 +53,7 @@ private fun createRecyclerView() {
     rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
         addAll(getFakeUsers())
     }
-    with(single_type_adapter_rv) {
+    with(recyclerView) {
         layoutManager = LinearLayoutManager(
             this@SingleTypeAdapterActivity,
             LinearLayoutManager.VERTICAL,
@@ -61,9 +65,9 @@ private fun createRecyclerView() {
 ```
 When you create your View Holder class you should extend BaseViewHolder, define your model type and override bindModel. In this method you can bind values to ui components
 ```kotlin 
-class UserViewHolder(view: View) : BaseViewHolder<User>(view) {
+class UserViewHolder(private val binding: ViewHolderUserBinding) : BaseViewHolder<User>(view) {
   override fun bindModel(item: User) {
-      itemView.user_name_tv.text = item.name
+      binding.userNameTv.text = item.name
   }
 }
 ```
@@ -74,8 +78,12 @@ This library is also provide the ability to manage button click events inside yo
 Base Recycler View provide few method that you can use to update your model in list (for example ```rvAdapter.update(item, position)```). After changes:
 ```kotlin
 private val viewHoldersUtil = viewHoldersUtil {
-    create(R.layout.view_holder_user) { view-> 
-        UserViewHolder(view, object : UserViewHolderListener {
+    create(R.layout.view_holder_user) { parent-> 
+        UserViewHolder(
+          UserViewHolder(
+            ViewHolderUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+          ),
+          object : UserViewHolderListener {
             override fun onClickViewHolder(item: User, position: Int) {
                   item.name = "User name changed"
                   rvAdapter.update(item, position)
@@ -91,7 +99,7 @@ private fun createRecyclerView() {
     rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
         addAll(getFakeUsers())
     }
-    with(single_type_adapter_rv) {
+    with(recyclerView) {
         layoutManager = LinearLayoutManager(
             this@SingleTypeAdapterActivity,
             LinearLayoutManager.VERTICAL,
@@ -125,9 +133,21 @@ data class ExampleImage(
 After that you need to create View Holders for these items
 ```kotlin
 private val viewHoldersUtil = viewHoldersUtil {
-    create(R.layout.view_holder_user, ExampleUser::class.java) { view -> UserViewHolder(view) }
-    create(R.layout.view_holder_image, ExampleImage::class.java) { view -> ImageViewHolder(view) }
-    create(R.layout.view_holder_text, ExampleText::class.java) { view -> TextViewHolder(view) }
+  create(R.layout.view_holder_user, ExampleUser::class.java) { parent ->
+    UserViewHolder(
+      ViewHolderUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
+  }
+  create(R.layout.view_holder_image, ExampleImage::class.java) { parent ->
+    ImageViewHolder(
+      ViewHolderImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
+  }
+  create(R.layout.view_holder_text, ExampleText::class.java) { parent ->
+    TextViewHolder(
+      ViewHolderTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
+  }
 }
 ```
 To create an adapter with many types you need to call createMultipleTypesAdapter instead of createSingleTypeAdapter
@@ -136,7 +156,7 @@ private fun createRecyclerView() {
     rvAdapter = viewHoldersUtil.createMultipleTypesAdapter {
         addAll(getFakeItems())
     }
-    with(single_type_adapter_rv) {
+    with(recyclerView) {
         layoutManager = LinearLayoutManager(
             this@SingleTypeAdapterActivity,
             LinearLayoutManager.VERTICAL,
@@ -152,17 +172,36 @@ private fun createRecyclerView() {
 If your project use pagination and you want to add Loading View Holder at the bottom of the list you can modified code by following:
 ```kotlin
 private val viewHoldersUtil = viewHoldersUtil {
-    create(R.layout.view_holder_user, ExampleUser::class.java) { view -> UserViewHolder(view) }
-    create(R.layout.view_holder_image, ExampleImage::class.java) { view -> ImageViewHolder(view) }
-    create(R.layout.view_holder_text, ExampleText::class.java) { view -> TextViewHolder(view) }
-    createLoadingViewHolder { view -> DefaultLoadingViewHolder(view) } //This will add default loading to your list
+  create(R.layout.view_holder_user, ExampleUser::class.java) { parent ->
+    UserViewHolder(
+      ViewHolderUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
+  }
+  create(R.layout.view_holder_image, ExampleImage::class.java) { parent ->
+    ImageViewHolder(
+      ViewHolderImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
+  }
+  create(R.layout.view_holder_text, ExampleText::class.java) { parent ->
+    TextViewHolder(
+      ViewHolderTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
+  }
+  //This will add default loading to your list
+  createLoadingViewHolder { parent ->
+    DefaultLoadingViewHolder(
+      ViewHolderDefaultLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
+  }
 }
 ```
 You can also add your own custom loading
 ```kotlin
 private val viewHoldersUtil = viewHoldersUtil {
-    ...
-    createLoadingViewHolder(R.layout.you_custom_view_holder) { view -> CustomViewHolder(view) }
+  ...
+  createLoadingViewHolder(R.layout.you_custom_view_holder) { parent -> 
+    CustomViewHolder(YourCustomViewHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+  }
 }
 ```
 We also need to know when the list was scrolled to the bottom. To archive this we should add callback to RecyclerView ```RecyclerView.addOnScrollListener()```.
@@ -182,7 +221,7 @@ private fun createRecyclerView() {
         addAll(getFakeUsers())
         onScrollingObserver = onRvScrollListener // Adding scroll observer to adapter
     }
-    with(single_type_adapter_rv) {
+    with(recyclerView) {
         layoutManager = LinearLayoutManager(
             this@SingleTypeAdapterActivity,
             LinearLayoutManager.VERTICAL,
@@ -214,10 +253,10 @@ In xml wrap your RecyclerView in SwipeRefreshLayout:
 ```
 And set onRefreshListener:
 ```kotlin
-rv_refresher_srl.setOnRefreshListener {
+listRefresher.setOnRefreshListener {
     rvAdapter.refresh() // this method updates the list in the adapter 
     updateList(fakeItems)
-    rv_refresher_srl.isRefreshing = false
+    listRefresher.isRefreshing = false
 }
 ```
 
@@ -230,7 +269,7 @@ private fun createRecyclerView() {
     rvAdapter = viewHoldersUtil.createSingleTypeAdapter {
         addAll(getFakeUsers())
     }
-    with(single_type_adapter_rv) {
+    with(recyclerView) {
         layoutManager = LinearLayoutManager(
             this@SingleTypeAdapterActivity,
             LinearLayoutManager.VERTICAL,
