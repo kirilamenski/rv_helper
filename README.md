@@ -29,7 +29,7 @@ allprojects {
 and to your app level build.gradle:
 ```gradle
 dependencies {
-    implementation 'com.github.kirilamenski:rv_helper:1.1.5'
+    implementation 'com.github.kirilamenski:rv_helper:1.1.6'
 }
 ```
 
